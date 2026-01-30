@@ -6,7 +6,7 @@ export interface Game {
   category: string;
   thumbnail: string;
   url: string;
-  rating: number;
+  playCount: number;
   featured?: boolean;
 }
 

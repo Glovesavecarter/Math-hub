@@ -8,7 +8,7 @@ export const getGameRecommendation = async (userQuery: string, gamesList: Game[]
   try {
     const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
-      contents: `You are a gaming expert assistant for NovaPlay Unblocked. 
+      contents: `You are a gaming expert assistant for Math Hub. 
       Given the user's mood or query: "${userQuery}", and the following available games: ${JSON.stringify(gamesList.map(g => ({id: g.id, title: g.title, category: g.category})))}.
       Recommend the best game and provide a short, cool reason why.`,
       config: {

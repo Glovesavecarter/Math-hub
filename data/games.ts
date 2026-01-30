@@ -3,23 +3,24 @@ import { Game, GameCategory } from '../types';
 
 export const GAMES: Game[] = [
   {
-    id: '2048',
-    title: '2048',
-    description: 'Join the numbers and get to the 2048 tile!',
-    category: GameCategory.PUZZLE,
-    thumbnail: 'https://picsum.photos/seed/2048/400/300',
-    url: 'https://play2048.co/',
-    rating: 4.8,
+    id: 'escape-road-2',
+    title: 'Escape Roads 2',
+    description: 'A high-intensity strategic evasion simulator. Calculate optimal escape vectors and navigate complex road networks under pressure to master spatial logic.',
+    category: GameCategory.ACTION,
+    thumbnail: 'https://picsum.photos/seed/escape/400/300',
+    url: 'https://1games.io/game/escape-road-2/',
+    playCount: 125430,
     featured: true
   },
   {
-    id: 't-rex-run',
-    title: 'Chrome Dino',
-    description: 'The classic runner game from Google Chrome.',
+    id: 'slope',
+    title: 'Slope',
+    description: 'A high-speed 3D spatial reasoning challenge. Navigate the ball through an endless obstacle course to test your reflexes and logic.',
     category: GameCategory.ACTION,
-    thumbnail: 'https://picsum.photos/seed/dino/400/300',
-    url: 'https://chromedino.com/',
-    rating: 4.5
+    thumbnail: 'https://picsum.photos/seed/slope/400/300',
+    url: 'https://azgames.io/game/xlope/',
+    playCount: 98200,
+    featured: true
   },
   {
     id: 'pacman',
@@ -28,44 +29,7 @@ export const GAMES: Game[] = [
     category: GameCategory.RETRO,
     thumbnail: 'https://picsum.photos/seed/pacman/400/300',
     url: 'https://www.google.com/logos/2010/pacman10-i.html',
-    rating: 4.9,
-    featured: true
-  },
-  {
-    id: 'tetris',
-    title: 'Classic Tetris',
-    description: 'The world-famous block-stacking puzzle game.',
-    category: GameCategory.PUZZLE,
-    thumbnail: 'https://picsum.photos/seed/tetris/400/300',
-    url: 'https://tetris.com/play-tetris',
-    rating: 4.7
-  },
-  {
-    id: 'flappy-bird',
-    title: 'Flappy Bird',
-    description: 'Avoid the pipes and fly as far as you can.',
-    category: GameCategory.ACTION,
-    thumbnail: 'https://picsum.photos/seed/flappy/400/300',
-    url: 'https://flappybird.io/',
-    rating: 4.2
-  },
-  {
-    id: 'snake',
-    title: 'Google Snake',
-    description: 'Grow your snake by eating apples.',
-    category: GameCategory.RETRO,
-    thumbnail: 'https://picsum.photos/seed/snake/400/300',
-    url: 'https://www.google.com/logos/2010/pacman10-i.html', // Placeholder link
-    rating: 4.6
-  },
-  {
-    id: 'slope',
-    title: 'Slope',
-    description: 'Drive a ball down a 3D slope for as long as possible.',
-    category: GameCategory.ACTION,
-    thumbnail: 'https://picsum.photos/seed/slope/400/300',
-    url: 'https://slope.io/',
-    rating: 4.4,
+    playCount: 85400,
     featured: true
   },
   {
@@ -75,6 +39,62 @@ export const GAMES: Game[] = [
     category: GameCategory.ADVENTURE,
     thumbnail: 'https://picsum.photos/seed/cookie/400/300',
     url: 'https://orteil.dashnet.org/cookieclicker/',
-    rating: 4.9
+    playCount: 77120
+  },
+  {
+    id: '2048',
+    title: '2048',
+    description: 'Join the numbers and get to the 2048 tile!',
+    category: GameCategory.PUZZLE,
+    thumbnail: 'https://picsum.photos/seed/2048/400/300',
+    url: 'https://play2048.co/',
+    playCount: 62000,
+    featured: true
+  },
+  {
+    id: 'granny',
+    title: 'Granny',
+    description: 'A stealth-based survival logic challenge. Analyze sound propagation and master environmental awareness to navigate complex indoor architecture and escape.',
+    category: GameCategory.ACTION,
+    thumbnail: 'https://picsum.photos/seed/granny/400/300',
+    url: 'https://gnhustgames.org/granny-source/',
+    playCount: 54300,
+    featured: true
+  },
+  {
+    id: 'tetris',
+    title: 'Classic Tetris',
+    description: 'The world-famous block-stacking puzzle game.',
+    category: GameCategory.PUZZLE,
+    thumbnail: 'https://picsum.photos/seed/tetris/400/300',
+    url: 'https://tetris.com/play-tetris',
+    playCount: 41200
+  },
+  {
+    id: 't-rex-run',
+    title: 'Chrome Dino',
+    description: 'The classic runner game from Google Chrome.',
+    category: GameCategory.ACTION,
+    thumbnail: 'https://picsum.photos/seed/dino/400/300',
+    url: 'https://chromedino.com/',
+    playCount: 38900
+  },
+  {
+    id: 'snake',
+    title: 'Google Snake',
+    description: 'Grow your snake by eating apples.',
+    category: GameCategory.RETRO,
+    thumbnail: 'https://picsum.photos/seed/snake/400/300',
+    url: 'https://www.google.com/logos/2010/pacman10-i.html',
+    playCount: 31500
+  },
+  {
+    id: 'flappy-bird',
+    title: 'Flappy Bird',
+    description: 'Avoid the pipes and fly as far as you can.',
+    category: GameCategory.ACTION,
+    thumbnail: 'https://picsum.photos/seed/flappy/400/300',
+    url: 'https://flappybird.io/',
+    playCount: 22100
   }
-];
+].sort((a, b) => b.playCount - a.playCount);
