@@ -3,102 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Hub | Premium Logic & Strategy Resources</title>
-    <meta name="description" content="A portal for interactive logic puzzles and educational simulations.">
-    
-    <!-- Fix 6: Tailwind (stop prod warning) -->
-    <script>
-      if (location.hostname === "localhost" || location.hostname.includes('127.0.0.1')) {
-        document.write('<script src="https://cdn.tailwindcss.com"></script>');
-      } else {
-        const s = document.createElement("script");
-        s.src = "https://cdn.tailwindcss.com";
-        document.head.appendChild(s);
-      }
-    </script>
-    
-    <!-- Fix 2: Monaco Editor workers (prevent UI freezes/errors) -->
-    <script>
-      window.MonacoEnvironment = {
-        getWorkerUrl: function () {
-          return URL.createObjectURL(
-            new Blob(
-              [`
-                self.MonacoEnvironment = {
-                  baseUrl: 'https://www.gstatic.com/monaco_editor/latest/min/'
-                };
-                importScripts('https://www.gstatic.com/monaco_editor/latest/min/vs/base/worker/workerMain.js');
-              `],
-              { type: "text/javascript" }
-            )
-          );
-        }
-      };
-    </script>
-
-    <!-- Fix 5: Disable GTM during development to stop timeout noise -->
-    <script>
-      if (location.hostname !== "localhost" && !location.hostname.includes('127.0.0.1')) {
-        const s = document.createElement("script");
-        s.src = "https://www.googletagmanager.com/gtm.js?id=GTM-TT9C75WP";
-        s.async = true;
-        document.head.appendChild(s);
-      }
-    </script>
-
+    <title>Math Hub | Command Center</title>
+    <meta name="description" content="Strategic cognitive training and logic modules.">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-    
     <style>
+        :root {
+            --brand-primary: #6366f1;
+            --bg-deep: #020617;
+            --bg-panel: rgba(15, 23, 42, 0.7);
+            --border-glow: rgba(99, 102, 241, 0.2);
+        }
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #020617;
+            background-color: var(--bg-deep);
             color: #f8fafc;
-            overflow-x: hidden;
             margin: 0;
+            overflow-x: hidden;
         }
-        .font-orbitron {
-            font-family: 'Orbitron', sans-serif;
+        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        .glass-panel {
+            background: var(--bg-panel);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        ::-webkit-scrollbar {
-            width: 8px;
+        .command-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
+        .command-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--brand-primary);
+            box-shadow: 0 0 30px var(--border-glow);
         }
-        ::-webkit-scrollbar-thumb {
-            background: #6366f1;
-            border-radius: 4px;
-        }
-        .page-fade-in {
-            animation: fadeIn 0.4s ease-out forwards;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-deep); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
     </style>
-
-    <script>
-        window.process = { env: { API_KEY: '' } };
-        // Fix 4: Disable unsupported Chrome AI features warnings
-        if (!("ai" in window)) {
-          console.debug("Chrome AI APIs not available (Optional Feature)");
-        }
-    </script>
-
-    <!-- CRITICAL FIX: The useRef error is caused by React version mismatch. 
-         We use ?deps= to force lucide and react-router-dom to use the SAME react instance. -->
     <script type="importmap">
 {
   "imports": {
-    "react": "https://esm.sh/react@19.0.0",
-    "react-dom": "https://esm.sh/react-dom@19.0.0",
-    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
-    "react-router-dom": "https://esm.sh/react-router-dom@6.28.0?deps=react@19.0.0,react-dom@19.0.0",
-    "lucide-react": "https://esm.sh/lucide-react@0.468.0?deps=react@19.0.0",
+    "react": "https://esm.sh/react@18.3.1",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+    "react-router-dom": "https://esm.sh/react-router-dom@6.26.2?deps=react@18.3.1,react-dom@18.3.1",
+    "lucide-react": "https://esm.sh/lucide-react@0.446.0?deps=react@18.3.1",
     "htm": "https://esm.sh/htm@3.1.1",
-    "@google/genai": "https://esm.sh/@google/genai",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.38.0"
   }
 }
 </script>
