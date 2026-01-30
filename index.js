@@ -16,8 +16,9 @@ const mount = () => {
         <${MathHubApp} />
       <//>
     `);
+    console.log("Math Hub Bootstrapped Successfully.");
   } catch (err) {
-    console.error("Mount error:", err);
+    console.error("Critical mounting error:", err);
   }
 };
 

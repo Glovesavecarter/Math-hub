@@ -134,13 +134,13 @@ const HomePage = ({ games, searchQuery, activeCategory }) => {
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/40 to-transparent" />
           <div className="relative h-full flex flex-col justify-center px-12 md:px-20 max-w-4xl">
             <h1 className="font-orbitron text-5xl md:text-7xl font-black text-white mb-6 leading-[1] tracking-tighter">
-              COGNITIVE <br /><span className="text-indigo-500">POWER</span>
+              LOGIC <br /><span className="text-indigo-500">OPTIMIZED</span>
             </h1>
             <p className="text-slate-400 text-lg md:text-xl mb-10 leading-relaxed max-w-xl font-medium">
-              Access premium interactive training modules for cognitive development and tactical strategy.
+              High-performance interactive training modules for cognitive development and tactical strategy.
             </p>
             <div className="flex gap-4">
-              <${Link} to="/game/escape-road-2" className="px-10 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl transition-all shadow-xl shadow-indigo-600/30 uppercase text-xs tracking-widest">
+              <${Link} to="/game/escape-road-2" className="px-10 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl transition-all shadow-xl shadow-indigo-600/30 uppercase text-sm tracking-widest">
                 Explore Modules
               <//>
             </div>
@@ -151,7 +151,7 @@ const HomePage = ({ games, searchQuery, activeCategory }) => {
       <section>
         <div className="flex items-center justify-between mb-10">
           <h2 className="text-xl font-black text-white uppercase tracking-widest flex items-center gap-4">
-            ${activeCategory === 'all' ? 'Active Modules' : activeCategory}
+            ${activeCategory === 'all' ? 'Featured Modules' : activeCategory}
             <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span>
           </h2>
         </div>
@@ -188,7 +188,7 @@ const GameDetail = ({ games }) => {
     }
   }, [game]);
 
-  if (!game) return html`<div className="p-20 text-center text-slate-500 font-bold uppercase">Invalid Access.</div>`;
+  if (!game) return html`<div className="p-20 text-center text-slate-500 font-bold uppercase tracking-widest">Module not found.</div>`;
 
   return html`
     <div className="max-w-7xl mx-auto space-y-12 page-fade-in">
@@ -210,7 +210,7 @@ const GameDetail = ({ games }) => {
               ${game.category}
             </span>
           </div>
-          <p className="text-slate-400 leading-relaxed text-xl font-medium">
+          <p className="text-slate-400 leading-relaxed text-xl font-medium max-w-3xl">
             ${game.description}
           </p>
 
@@ -221,7 +221,7 @@ const GameDetail = ({ games }) => {
             </h3>
             <div className="text-slate-400 leading-relaxed font-medium">
               ${isLoadingGuide 
-                ? html`<div className="animate-pulse text-indigo-400/50">Analyzing data...</div>`
+                ? html`<div className="animate-pulse flex items-center gap-2 text-indigo-400/50"><div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce"></div> Analyzing tactical data...</div>`
                 : html`<div className="whitespace-pre-line">${guide}</div>`
               }
             </div>
@@ -253,11 +253,12 @@ const MathHubApp = () => {
         </main>
 
         <footer className="bg-slate-950 border-t border-slate-900 py-12 px-8 text-center mt-auto">
-          <div className="max-w-7xl mx-auto flex items-center justify-between opacity-30">
+          <div className="max-w-7xl mx-auto flex items-center justify-between opacity-30 grayscale hover:opacity-50 transition-opacity">
             <div className="flex items-center gap-3">
               <${Sigma} className="w-5 h-5" />
-              <span className="font-orbitron font-black uppercase text-xs">Math Hub</span>
+              <span className="font-orbitron font-black uppercase text-sm tracking-tighter">Math Hub</span>
             </div>
+            <span className="text-[10px] font-black uppercase tracking-widest">System Operational</span>
           </div>
         </footer>
       </div>
