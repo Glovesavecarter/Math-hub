@@ -138,7 +138,6 @@ const GameCard = ({ game }) => {
             <${Play} className="w-3 h-3 fill-indigo-500/30" />
             Launch Module
           </div>
-          <span className="text-slate-700">${(game.playCount / 1000).toFixed(1)}K Sessions</span>
         </div>
       </div>
     <//>
