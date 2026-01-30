@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Hub | Interactive Learning</title>
+    <title>Math Hub | Interactive Logic & Geometry Simulations</title>
+    <meta name="description" content="A comprehensive portal for interactive logic puzzles, spatial reasoning modules, and educational simulations. Optimize your cognitive performance with Math Hub.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -12,6 +13,7 @@
             font-family: 'Inter', sans-serif;
             background-color: #0f172a;
             color: #f8fafc;
+            overflow-x: hidden;
         }
         .font-orbitron {
             font-family: 'Orbitron', sans-serif;
@@ -29,6 +31,14 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #6366f1;
         }
+        /* Fade in animation for routes */
+        .page-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 <script type="importmap">
 {
@@ -45,5 +55,6 @@
 </head>
 <body>
     <div id="root"></div>
+    <script type="module" src="index.tsx"></script>
 </body>
 </html>

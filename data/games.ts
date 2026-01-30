@@ -13,6 +13,16 @@ export const GAMES: Game[] = [
     featured: true
   },
   {
+    id: 'escape-road',
+    title: 'Escape Road',
+    description: 'A high-stakes tactical navigation challenge. Plan your route through urban obstacles to evade pursuers using real-time spatial logic.',
+    category: GameCategory.ACTION,
+    thumbnail: 'https://picsum.photos/seed/escape-road/400/300',
+    url: 'https://azgames.io/game/escape-road/',
+    playCount: 110500,
+    featured: true
+  },
+  {
     id: 'slope',
     title: 'Slope',
     description: 'A high-speed 3D spatial reasoning challenge. Navigate the ball through an endless obstacle course to test your reflexes and logic.',
