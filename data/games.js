@@ -2,13 +2,13 @@ import { GameCategory } from '../types.js';
 
 export const GAMES = [
   {
-    id: 'space-waves',
-    title: 'Space Waves',
-    description: 'A precision rhythm-based navigation module. Synchronize with high-frequency oscillation patterns to pilot through hazardous deep-space architecture.',
+    id: 'smash-karts',
+    title: 'Smash Karts',
+    description: 'High-octane kinetic combat module. Optimize projectile trajectories and tactical positioning in a high-concurrency multiplayer environment.',
     category: GameCategory.ACTION,
-    thumbnail: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=600',
-    url: 'https://space-waves.game-files.crazygames.com/unity/unity2020/space-waves.html?skipPrerollFirstSession=true&v=1.349',
-    playCount: 192400
+    thumbnail: 'https://images.unsplash.com/photo-1595078475328-1ab05d0a6a0e?auto=format&fit=crop&q=80&w=600',
+    url: 'https://smash-karts.game-files.crazygames.com/smash-karts/177/index.html?skipPrerollFirstSession=true',
+    playCount: 215000
   },
   {
     id: 'rocket-league',
