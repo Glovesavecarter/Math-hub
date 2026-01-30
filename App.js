@@ -260,53 +260,21 @@ const GameDetail = ({ games }) => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-        <div className="lg:col-span-8 space-y-6">
-          <div className="space-y-4">
-            <h1 className="font-orbitron text-4xl lg:text-5xl font-black text-white uppercase tracking-tighter">${game.title}</h1>
-            <div className="flex items-center gap-3">
-              <span className="px-4 py-1.5 bg-indigo-600/10 text-indigo-400 text-[10px] font-black rounded-lg border border-indigo-500/20 uppercase tracking-widest">
-                ${game.category}
-              </span>
-              <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">
-                Stability: 100%
-              </span>
-            </div>
-          </div>
-          <p className="text-slate-400 text-lg leading-relaxed font-medium">
-            ${game.description}
-          </p>
-        </div>
-
-        <div className="lg:col-span-4 space-y-6">
-          <div className="glass-panel p-8 rounded-[2rem] border border-white/5 space-y-6">
-            <h3 className="text-xs font-black text-indigo-400 flex items-center gap-3 uppercase tracking-[0.3em]">
-              <${Cpu} className="w-4 h-4" />
-              Module Parameters
-            </h3>
-            <div className="space-y-4 text-[11px] font-bold uppercase tracking-widest">
-              <div className="flex justify-between py-2 border-b border-white/5">
-                <span className="text-slate-500">Global Sessions</span>
-                <span className="text-slate-200">${(game.playCount / 1000).toFixed(0)}K</span>
-              </div>
-              <div className="flex justify-between py-2 border-b border-white/5">
-                <span className="text-slate-500">Security Rating</span>
-                <span className="text-slate-200">Tier A</span>
-              </div>
-              <div className="flex justify-between py-2">
-                <span className="text-slate-500">Logic Load</span>
-                <span className="text-green-500">Optimal</span>
-              </div>
-            </div>
-            <button 
-              onClick=${toggleFullScreen}
-              className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2"
-            >
-              <${Maximize} className="w-3 h-3" />
-              Full Screen Mode
-            </button>
+      <div className="max-w-4xl space-y-6">
+        <div className="space-y-4">
+          <h1 className="font-orbitron text-4xl lg:text-5xl font-black text-white uppercase tracking-tighter">${game.title}</h1>
+          <div className="flex items-center gap-3">
+            <span className="px-4 py-1.5 bg-indigo-600/10 text-indigo-400 text-[10px] font-black rounded-lg border border-indigo-500/20 uppercase tracking-widest">
+              ${game.category}
+            </span>
+            <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">
+              Stability: 100%
+            </span>
           </div>
         </div>
+        <p className="text-slate-400 text-lg leading-relaxed font-medium">
+          ${game.description}
+        </p>
       </div>
     </div>
   `;

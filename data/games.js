@@ -2,13 +2,22 @@ import { GameCategory } from '../types.js';
 
 export const GAMES = [
   {
-    id: 'retro-bowl',
-    title: 'Retro Bowl',
-    description: 'The ultimate armchair quarterback challenge. Manage your team, draft players, and win the big game in this addictive retro-style football sim.',
-    category: GameCategory.STRATEGY,
-    thumbnail: 'https://images.unsplash.com/photo-1566577739112-5180d4bf9390?auto=format&fit=crop&q=80&w=600',
-    url: 'https://unblocked-games.org/games/retro-bowl/',
-    playCount: 155000
+    id: 'space-waves',
+    title: 'Space Waves',
+    description: 'A precision rhythm-based navigation module. Synchronize with high-frequency oscillation patterns to pilot through hazardous deep-space architecture.',
+    category: GameCategory.ACTION,
+    thumbnail: 'https://images.unsplash.com/photo-1614728263952-84ea256f9679?auto=format&fit=crop&q=80&w=600',
+    url: 'https://space-waves.game-files.crazygames.com/unity/unity2020/space-waves.html?skipPrerollFirstSession=true&v=1.349',
+    playCount: 192400
+  },
+  {
+    id: 'rocket-league',
+    title: 'Rocket League',
+    description: 'High-velocity physics-based soccer. Calculate complex ball trajectories and master aerial propulsion logic to dominate the arena.',
+    category: GameCategory.ACTION,
+    thumbnail: 'https://images.unsplash.com/photo-1593344484962-796055d4a3a4?auto=format&fit=crop&q=80&w=600',
+    url: 'https://rocketgoal.io/?sdk=crazy&skipPrerollFirstSession=true',
+    playCount: 185000
   },
   {
     id: 'escape-road-2',
