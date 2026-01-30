@@ -2,13 +2,13 @@ import { GameCategory } from '../types.js';
 
 export const GAMES = [
   {
-    id: 'smash-karts',
-    title: 'Smash Karts',
-    description: 'High-octane kinetic combat module. Optimize projectile trajectories and tactical positioning in a high-concurrency multiplayer environment.',
+    id: 'fnaf-2',
+    title: 'FNAF 2',
+    description: 'Advanced multi-point surveillance and security optimization module. Coordinate defensive protocols and monitor power distribution across a high-risk facility network.',
     category: GameCategory.ACTION,
-    thumbnail: 'https://images.unsplash.com/photo-1595078475328-1ab05d0a6a0e?auto=format&fit=crop&q=80&w=600',
-    url: 'https://smash-karts.game-files.crazygames.com/smash-karts/177/index.html?skipPrerollFirstSession=true',
-    playCount: 215000
+    thumbnail: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=600',
+    url: 'https://run3.io/popgame/fnaf/fnaf2.html',
+    playCount: 245000
   },
   {
     id: 'rocket-league',
