@@ -215,17 +215,11 @@ const GameDetail = ({ games }) => {
   }, [game]);
 
   const toggleFullScreen = () => {
-    if (iframeRef.current) {
-      if (iframeRef.current.requestFullscreen) {
-        iframeRef.current.requestFullscreen();
-      } else if (iframeRef.current.mozRequestFullScreen) { /* Firefox */
-        iframeRef.current.mozRequestFullScreen();
-      } else if (iframeRef.current.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-        iframeRef.current.webkitRequestFullscreen();
-      } else if (iframeRef.current.msRequestFullscreen) { /* IE/Edge */
-        iframeRef.current.msRequestFullscreen();
-      }
-    }
+    const el = iframeRef.current;
+    if (!el) return;
+    if (el.requestFullscreen) el.requestFullscreen();
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    else if (el.msRequestFullscreen) el.msRequestFullscreen();
   };
 
   if (!game) return html`
@@ -255,6 +249,7 @@ const GameDetail = ({ games }) => {
           title="${game.title}"
           className="w-full h-full border-0"
           allowFullScreen
+          loading="lazy"
         />
         <button 
           onClick=${toggleFullScreen}

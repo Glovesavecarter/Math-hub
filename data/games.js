@@ -2,6 +2,15 @@ import { GameCategory } from '../types.js';
 
 export const GAMES = [
   {
+    id: 'retro-bowl',
+    title: 'Retro Bowl',
+    description: 'The ultimate armchair quarterback challenge. Manage your team, draft players, and win the big game in this addictive retro-style football sim.',
+    category: GameCategory.STRATEGY,
+    thumbnail: 'https://images.unsplash.com/photo-1566577739112-5180d4bf9390?auto=format&fit=crop&q=80&w=600',
+    url: 'https://unblocked-games.org/games/retro-bowl/',
+    playCount: 155000
+  },
+  {
     id: 'escape-road-2',
     title: 'Escape Roads 2',
     description: 'A high-intensity strategic evasion simulator. Calculate optimal escape vectors and navigate complex road networks.',
@@ -20,15 +29,6 @@ export const GAMES = [
     playCount: 121000
   },
   {
-    id: 'pacman',
-    title: 'Google Pacman',
-    description: 'The definitive retro arcade experience. Navigate the grid and clear the board.',
-    category: GameCategory.RETRO,
-    thumbnail: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=600',
-    url: 'https://www.google.com/logos/2010/pacman10-i.html',
-    playCount: 98400
-  },
-  {
     id: 'cookie-clicker',
     title: 'Cookie Clicker',
     description: 'The ultimate idle game. Optimize your resource production and scale your empire.',
@@ -36,15 +36,6 @@ export const GAMES = [
     thumbnail: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&q=80&w=600',
     url: 'https://orteil.dashnet.org/cookieclicker/',
     playCount: 88200
-  },
-  {
-    id: 'tetris',
-    title: 'Classic Tetris',
-    description: 'World-famous geometric puzzle game. Clear lines and manage your stack.',
-    category: GameCategory.PUZZLE,
-    thumbnail: 'https://images.unsplash.com/photo-1605898835518-07d8d2b9044d?auto=format&fit=crop&q=80&w=600',
-    url: 'https://tetris.com/play-tetris',
-    playCount: 76000
   },
   {
     id: 'granny',
@@ -56,15 +47,6 @@ export const GAMES = [
     playCount: 54300
   },
   {
-    id: 'snake',
-    title: 'Google Snake',
-    description: 'Classical spatial growth simulation. Manage your length within the grid.',
-    category: GameCategory.RETRO,
-    thumbnail: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=600',
-    url: 'https://www.google.com/logos/2010/pacman10-i.html',
-    playCount: 44100
-  },
-  {
     id: 'escape-road-classic',
     title: 'Escape Road',
     description: 'The tactical navigation challenge that started it all.',
@@ -72,5 +54,23 @@ export const GAMES = [
     thumbnail: 'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&q=80&w=600',
     url: 'https://azgames.io/game/escape-road/',
     playCount: 41000
+  },
+  {
+    id: 't-rex-run',
+    title: 'Chrome Dino',
+    description: 'The classic runner game from Google Chrome.',
+    category: GameCategory.ACTION,
+    thumbnail: 'https://images.unsplash.com/photo-1551103782-8ab07afd45c1?auto=format&fit=crop&q=80&w=600',
+    url: 'https://chromedino.com/',
+    playCount: 38900
+  },
+  {
+    id: 'flappy-bird',
+    title: 'Flappy Bird',
+    description: 'Avoid the obstacles and fly as far as you can.',
+    category: GameCategory.ACTION,
+    thumbnail: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=600',
+    url: 'https://flappybird.io/',
+    playCount: 22100
   }
 ].sort((a, b) => b.playCount - a.playCount);
