@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
   Search, 
@@ -10,7 +10,6 @@ import {
   ChevronRight,
   Target,
   Terminal,
-  Zap,
   Play,
   ArrowLeft,
   Maximize,
@@ -22,7 +21,6 @@ import {
   Sparkles,
   ExternalLink,
   Lock,
-  Eye,
   Monitor
 } from 'lucide-react';
 import htm from 'htm';
@@ -37,7 +35,7 @@ const StealthProtocol = {
     const url = window.location.href;
     const win = window.open('about:blank', '_blank');
     if (!win) {
-      alert("Stealth Protocol Error: Popups are currently restricted. Grant permission to initialize anonymous window.");
+      alert("Stealth Protocol Error: Popups restricted. Grant permission to initialize anonymous window.");
       return;
     }
 
@@ -45,7 +43,7 @@ const StealthProtocol = {
     doc.title = "Google Docs";
     
     // Set favicon to Google Docs
-    const link = doc.createElement('link');
+    const link = doc.createElement('link') as HTMLLinkElement;
     link.rel = 'icon';
     link.type = 'image/x-icon';
     link.href = 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico';
@@ -60,15 +58,15 @@ const StealthProtocol = {
     iframe.style.width = '100%';
     iframe.style.height = '100%';
     iframe.style.border = 'none';
-    iframe.style.backgroundColor = '#000';
+    iframe.style.backgroundColor = '#020617';
     
     doc.body.style.margin = '0';
     doc.body.style.padding = '0';
     doc.body.style.overflow = 'hidden';
     doc.body.appendChild(iframe);
 
-    // Redirect the original tab to safety
-    window.location.replace("https://www.google.com/search?q=calculus+notes+pdf+2025");
+    // Redirect current tab to safety
+    window.location.replace("https://www.google.com/search?q=calculus+notes+and+study+resources+2025");
   }
 };
 
@@ -82,7 +80,7 @@ const SettingsModal = ({ isOpen, onClose, cloakEnabled, onToggleCloak }) => {
         <div className="flex items-center justify-between">
           <h2 className="font-orbitron text-xl font-black text-white uppercase tracking-tighter flex items-center gap-4">
             <${Terminal} className="w-5 h-5 text-indigo-500" />
-            Security Configuration
+            Operational Security
           </h2>
           <button onClick=${onClose} className="p-2 hover:bg-white/5 rounded-xl transition-all">
             <${X} className="w-5 h-5 text-slate-500" />
@@ -96,17 +94,17 @@ const SettingsModal = ({ isOpen, onClose, cloakEnabled, onToggleCloak }) => {
                 <${Ghost} className="w-5 h-5 text-indigo-400" />
                 <h3 className="text-xs font-black text-white uppercase tracking-widest">About:Blank Cloak</h3>
               </div>
-              <span className="px-2 py-0.5 rounded bg-indigo-500/20 text-[9px] font-black text-indigo-400 uppercase tracking-widest">Stealth Engine</span>
+              <span className="px-2 py-0.5 rounded bg-indigo-500/20 text-[9px] font-black text-indigo-400 uppercase">Stealth v3</span>
             </div>
             <p className="text-[10px] text-slate-400 leading-relaxed font-medium">
-              Encapsulate this session in an anonymous <code className="text-indigo-300">about:blank</code> tab. This method leaves zero traces in browser history and bypasses most surveillance software.
+              Initialize the application inside an anonymous <code className="text-indigo-300">about:blank</code> tab. This method hides URLs from history and monitoring.
             </p>
             <button 
               onClick=${StealthProtocol.launch}
               className="w-full flex items-center justify-center gap-2 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl transition-all shadow-lg shadow-indigo-600/20 uppercase text-[10px] tracking-widest"
             >
               <${ExternalLink} className="w-4 h-4" />
-              Initialize Stealth Window
+              Launch Stealth Session
             </button>
           </div>
 
@@ -119,9 +117,9 @@ const SettingsModal = ({ isOpen, onClose, cloakEnabled, onToggleCloak }) => {
             }`}
           >
             <div className="space-y-1">
-              <h3 className="text-xs font-black text-white uppercase tracking-widest">Static Identity Mask</h3>
+              <h3 className="text-xs font-black text-white uppercase tracking-widest">Identity Masking</h3>
               <p className="text-[10px] text-slate-500 font-medium">
-                ${cloakEnabled ? 'Active: Site masked as "about:blank"' : 'Instantly rename tab and replace favicon.'}
+                ${cloakEnabled ? 'Active: Site masked as "about:blank"' : 'Mask current tab metadata to evade detection.'}
               </p>
             </div>
             <${EyeOff} className=${`w-5 h-5 ${cloakEnabled ? 'text-green-400' : 'text-slate-600'}`} />
@@ -132,7 +130,7 @@ const SettingsModal = ({ isOpen, onClose, cloakEnabled, onToggleCloak }) => {
           <div className="flex items-center gap-3">
             <${Shield} className="w-5 h-5 text-red-500" />
             <div>
-              <span className="block text-[10px] font-black uppercase tracking-widest text-red-400">Panic Trigger</span>
+              <span className="block text-[10px] font-black uppercase tracking-widest text-red-400">Panic Switch</span>
               <span className="block text-[9px] font-bold text-red-500/60 uppercase">Press [ESC] to instantly terminate session</span>
             </div>
           </div>
@@ -166,10 +164,10 @@ const Navbar = ({ onSearch, onOpenSettings }) => html`
       <div className="flex items-center gap-4">
         <button 
           onClick=${StealthProtocol.launch} 
-          className="p-3 rounded-2xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-400 hover:bg-indigo-600 hover:text-white transition-all hidden md:flex items-center gap-2 px-4"
+          className="hidden md:flex items-center gap-2 p-3 bg-indigo-600/20 border border-indigo-500/20 text-indigo-400 hover:bg-indigo-600 hover:text-white transition-all rounded-2xl px-5"
         >
           <${Monitor} className="w-4 h-4" />
-          <span className="text-[10px] font-black uppercase tracking-widest">Unblock</span>
+          <span className="text-[10px] font-black uppercase tracking-widest">Stealth</span>
         </button>
         <button onClick=${onOpenSettings} className="p-3 rounded-2xl glass-panel border border-white/5 text-slate-400 hover:text-indigo-400 hover:border-indigo-500/20 transition-all">
           <${Settings} className="w-5 h-5" />
@@ -197,20 +195,18 @@ const HomePage = ({ games, searchQuery, activeCategory, onCategoryChange }) => {
 
   return html`
     <div className="max-w-[1600px] mx-auto px-6 py-10 space-y-12 animate-in">
-      <div className="flex items-center justify-between">
-        <div className="flex flex-wrap gap-3">
-          ${categories.map(cat => html`
-            <button 
-              onClick=${() => onCategoryChange(cat.id)}
-              className=${`px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-3 border transition-all ${
-                activeCategory === cat.id ? 'bg-indigo-600 border-indigo-500 text-white shadow-xl shadow-indigo-600/30' : 'bg-white/5 border-white/5 text-slate-400 hover:bg-white/10 hover:text-slate-200'
-              }`}
-            >
-              <${cat.icon} className="w-3.5 h-3.5" />
-              ${cat.name}
-            </button>
-          `)}
-        </div>
+      <div className="flex flex-wrap gap-3">
+        ${categories.map(cat => html`
+          <button 
+            onClick=${() => onCategoryChange(cat.id)}
+            className=${`px-5 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-3 border transition-all ${
+              activeCategory === cat.id ? 'bg-indigo-600 border-indigo-500 text-white shadow-xl shadow-indigo-600/30' : 'bg-white/5 border-white/5 text-slate-400 hover:bg-white/10 hover:text-slate-200'
+            }`}
+          >
+            <${cat.icon} className="w-3.5 h-3.5" />
+            ${cat.name}
+          </button>
+        `)}
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
@@ -242,7 +238,7 @@ const GameView = ({ games }) => {
   const id = pathname.split('/').pop();
   const game = games.find(g => g.id === id);
   const [guide, setGuide] = useState('');
-  const iframeRef = React.useRef(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     if (game) {
@@ -255,7 +251,7 @@ const GameView = ({ games }) => {
     const el = iframeRef.current;
     if (el) {
       if (el.requestFullscreen) el.requestFullscreen();
-      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      else if ((el as any).webkitRequestFullscreen) (el as any).webkitRequestFullscreen();
     }
   };
 
@@ -266,15 +262,14 @@ const GameView = ({ games }) => {
       <div className="flex items-center justify-between">
         <${Link} to="/" className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-xl border border-white/5">
           <${ArrowLeft} className="w-3.5 h-3.5" />
-          Operational Directory
+          Directory Hub
         <//>
-        <button 
-          onClick=${StealthProtocol.launch} 
-          className="text-[10px] font-black uppercase tracking-widest text-indigo-400 hover:text-indigo-300 transition-colors flex items-center gap-2"
-        >
-          <${Shield} className="w-3.5 h-3.5" />
-          Launch in Anonymous Tab
-        </button>
+        <div className="flex items-center gap-6">
+          <button onClick=${StealthProtocol.launch} className="text-[10px] font-black uppercase tracking-widest text-indigo-400 hover:text-white transition-colors flex items-center gap-2">
+            <${Shield} className="w-3.5 h-3.5" />
+            Anonymous Launch
+          </button>
+        </div>
       </div>
 
       <div className="group relative aspect-video w-full bg-slate-950 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl">
@@ -296,8 +291,8 @@ const GameView = ({ games }) => {
           <div className="space-y-2">
             <h1 className="font-orbitron text-4xl lg:text-5xl font-black text-white uppercase tracking-tighter">${game.title}</h1>
             <div className="flex items-center gap-4 text-indigo-400">
-              <span className="px-3 py-1 bg-indigo-500/10 rounded-lg text-[10px] font-black tracking-widest border border-indigo-500/20 uppercase">${game.category} Vector</span>
-              <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Protocol: Active</span>
+              <span className="px-3 py-1 bg-indigo-500/10 rounded-lg text-[10px] font-black tracking-widest border border-indigo-500/20 uppercase">${game.category} Module</span>
+              <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Protocol: Established</span>
             </div>
           </div>
           <p className="text-slate-400 text-lg leading-relaxed font-medium max-w-4xl">${game.description}</p>
@@ -306,12 +301,12 @@ const GameView = ({ games }) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 text-indigo-400">
               <${Sparkles} className="w-5 h-5" />
-              <h4 className="text-[10px] font-black uppercase tracking-widest">Intelligence Feed</h4>
+              <h4 className="text-[10px] font-black uppercase tracking-widest">Tactical Intel</h4>
             </div>
             <${Terminal} className="w-4 h-4 text-slate-700" />
           </div>
           <div className="text-[11px] text-slate-300 font-medium leading-relaxed whitespace-pre-wrap font-mono opacity-80">
-            ${guide || 'Calculating optimal strategies...'}
+            ${guide || 'Synthesizing guide data...'}
           </div>
         </div>
       </div>
@@ -327,7 +322,7 @@ const MathHubApp = () => {
 
   useEffect(() => {
     const handlePanic = (e) => {
-      if (e.key === 'Escape') window.location.replace("https://www.google.com/search?q=academic+integrity+and+study+skills");
+      if (e.key === 'Escape') window.location.replace("https://www.google.com/search?q=academic+integrity+and+calculus+study+skills");
     };
     window.addEventListener('keydown', handlePanic);
     return () => window.removeEventListener('keydown', handlePanic);
@@ -362,16 +357,16 @@ const MathHubApp = () => {
           <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-center justify-between gap-10 opacity-40 grayscale group hover:grayscale-0 hover:opacity-100 transition-all duration-700">
             <div className="flex items-center gap-3">
               <${Sigma} className="w-5 h-5 text-indigo-500" />
-              <span className="font-orbitron font-black uppercase text-xs tracking-[0.4em] text-white">Math Hub v3.8.1-Cloaked</span>
+              <span className="font-orbitron font-black uppercase text-xs tracking-[0.4em] text-white">Math Hub v3.9.5-S</span>
             </div>
             <div className="flex gap-10 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
+              <a href="#" className="hover:text-indigo-400 transition-colors">Nodes</a>
               <a href="#" className="hover:text-indigo-400 transition-colors">Manifesto</a>
-              <a href="#" className="hover:text-indigo-400 transition-colors">Network</a>
-              <a href="#" className="hover:text-indigo-400 transition-colors">Security</a>
+              <a href="#" className="hover:text-indigo-400 transition-colors">Encryption</a>
             </div>
             <div className="flex items-center gap-2 text-[10px] font-black text-slate-600 uppercase tracking-widest">
               <${Lock} className="w-3.5 h-3.5" />
-              End-to-End Encryption
+              Connection Secure
             </div>
           </div>
         </footer>
