@@ -10,6 +10,14 @@ export const GAMES = [
     url: 'https://genizymath.github.io/iframe/445.html'
   },
   {
+    id: 'kindergarten-2',
+    title: 'Kindergarten 2',
+    description: 'The advanced sequel to the tactical social interaction simulator. Navigate complex educational environments and optimize your decision-making to survive a new day in a high-stakes school setting.',
+    category: GameCategory.STRATEGY,
+    thumbnail: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80&w=600',
+    url: 'https://genizymath.github.io/iframe/446.html'
+  },
+  {
     id: 'minecraft-classic',
     title: 'Minecraft Classic',
     description: 'Open-world structural engineering and spatial resource management. Utilize foundational voxels to construct complex geometric structures in a persistent 3D environment.',

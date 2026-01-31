@@ -14,7 +14,14 @@ import {
   Zap,
   Play,
   ArrowLeft,
-  Maximize
+  Maximize,
+  Settings,
+  Shield,
+  Ghost,
+  X,
+  ExternalLink,
+  EyeOff,
+  Keyboard
 } from 'lucide-react';
 import htm from 'htm';
 import { GameCategory } from './types.js';
@@ -22,7 +29,114 @@ import { GAMES } from './data/games.js';
 
 const html = htm.bind(React.createElement);
 
-const Navbar = ({ onSearch }) => {
+const SettingsModal = ({ isOpen, onClose, cloakEnabled, onToggleCloak }) => {
+  if (!isOpen) return null;
+
+  const launchStealth = () => {
+    const url = window.location.href;
+    const win = window.open();
+    if (!win) {
+      alert("Popup blocked! Please allow popups to initialize Stealth Engine.");
+      return;
+    }
+    
+    win.document.title = "about:blank";
+    win.document.body.style.margin = '0';
+    win.document.body.style.height = '100vh';
+    win.document.body.style.backgroundColor = '#020617';
+    
+    const iframe = win.document.createElement('iframe');
+    iframe.style.border = 'none';
+    iframe.style.width = '100%';
+    iframe.style.height = '100%';
+    iframe.style.margin = '0';
+    iframe.src = url;
+    
+    win.document.body.appendChild(iframe);
+    
+    // Emergency redirect for the parent tab
+    window.location.replace("https://start.dvusd.org/");
+  };
+
+  return html`
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 animate-in fade-in duration-300">
+      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick=${onClose}></div>
+      <div className="relative w-full max-w-xl glass-panel border border-white/10 rounded-[2.5rem] overflow-hidden shadow-2xl animate-in zoom-in-95 duration-300">
+        <div className="p-10 space-y-8">
+          <div className="flex items-center justify-between">
+            <h2 className="font-orbitron text-xl font-black text-white uppercase tracking-tighter flex items-center gap-3">
+              <${Settings} className="w-5 h-5 text-indigo-500" />
+              Command Center Configuration
+            </h2>
+            <button onClick=${onClose} className="p-2 hover:bg-white/5 rounded-xl text-slate-500 hover:text-white transition-all">
+              <${X} className="w-5 h-5" />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="p-6 rounded-3xl bg-indigo-500/5 border border-indigo-500/10 space-y-4">
+              <div className="flex items-center gap-3 text-indigo-400">
+                <${Ghost} className="w-5 h-5" />
+                <h3 className="text-xs font-black uppercase tracking-widest">Stealth Engine</h3>
+              </div>
+              <p className="text-[10px] text-slate-400 leading-relaxed font-medium">
+                Launches a new <code className="text-indigo-400">about:blank</code> tab and embeds Math Hub. The current tab will self-destruct to DVUSD Portal.
+              </p>
+              <button 
+                onClick=${launchStealth}
+                className="w-full flex items-center justify-center gap-2 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-xl transition-all shadow-lg shadow-indigo-600/20 uppercase text-[9px] tracking-widest"
+              >
+                <${ExternalLink} className="w-3 h-3" />
+                Launch Cloaked Tab
+              </button>
+            </div>
+
+            <div className="p-6 rounded-3xl bg-slate-900/50 border border-white/5 space-y-4">
+              <div className="flex items-center gap-3 text-slate-200">
+                <${EyeOff} className="w-5 h-5 text-indigo-400" />
+                <h3 className="text-xs font-black uppercase tracking-widest">Tab Masking</h3>
+              </div>
+              <p className="text-[10px] text-slate-500 leading-relaxed font-medium">
+                Instantly renames this tab to "about:blank" and replaces the favicon.
+              </p>
+              <button 
+                onClick=${onToggleCloak}
+                className=${`w-full py-3 font-black rounded-xl transition-all uppercase text-[9px] tracking-widest border ${
+                  cloakEnabled 
+                    ? 'bg-green-500/10 text-green-400 border-green-500/20' 
+                    : 'bg-white/5 text-slate-400 border-white/10 hover:bg-white/10'
+                }`}
+              >
+                ${cloakEnabled ? 'Active: about:blank' : 'Enable Masking'}
+              </button>
+            </div>
+          </div>
+
+          <div className="p-6 rounded-3xl bg-slate-900/50 border border-white/5 space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3 text-red-400">
+                <${Shield} className="w-5 h-5" />
+                <h3 className="text-xs font-black uppercase tracking-widest">Panic Protocol</h3>
+              </div>
+              <div className="px-3 py-1 bg-white/5 rounded-lg border border-white/10 text-[9px] font-black text-slate-400">
+                KEY: [ESC]
+              </div>
+            </div>
+            <p className="text-[10px] text-slate-500 leading-relaxed font-medium">
+              Pressing the Panic Key (Escape) will instantly redirect all active sessions to the DVUSD login portal. 
+            </p>
+          </div>
+
+          <div className="flex justify-center text-[9px] font-bold text-slate-600 uppercase tracking-[0.3em]">
+            Logic Hub v2.6.0-Security
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+};
+
+const Navbar = ({ onSearch, onOpenSettings }) => {
   return html`
     <nav className="sticky top-0 z-50 glass-panel border-b border-white/5 px-6 py-4">
       <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-12">
@@ -45,14 +159,19 @@ const Navbar = ({ onSearch }) => {
           />
         </div>
 
-        <div className="flex items-center gap-6 shrink-0 text-[10px] font-bold text-slate-500 tracking-widest uppercase hidden lg:flex">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-            System Online
-          </div>
-          <div className="flex items-center gap-2">
-            <${Cpu} className="w-3 h-3" />
-            Logic Core: Active
+        <div className="flex items-center gap-4 shrink-0">
+          <button 
+            onClick=${onOpenSettings}
+            className="p-2.5 rounded-xl glass-panel border border-white/5 text-slate-400 hover:text-indigo-400 hover:border-indigo-500/20 transition-all"
+            title="Settings"
+          >
+            <${Settings} className="w-5 h-5" />
+          </button>
+          <div className="flex items-center gap-6 shrink-0 text-[10px] font-bold text-slate-500 tracking-widest uppercase hidden lg:flex">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-green-500"></div>
+              System Online
+            </div>
           </div>
         </div>
       </div>
@@ -284,11 +403,48 @@ const GameDetail = ({ games }) => {
 const MathHubApp = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [cloakEnabled, setCloakEnabled] = useState(false);
+
+  // Persistence of settings
+  useEffect(() => {
+    const savedCloak = localStorage.getItem('mathhub_cloak') === 'true';
+    setCloakEnabled(savedCloak);
+  }, []);
+
+  // Panic Key listener and Cloak effect
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        window.location.replace("https://start.dvusd.org/");
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    
+    if (cloakEnabled) {
+      document.title = "about:blank";
+      // Optional: Add a favicon cloaker here if needed
+    } else {
+      document.title = "Math Hub | Command Center";
+    }
+
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [cloakEnabled]);
+
+  const toggleCloak = () => {
+    const newVal = !cloakEnabled;
+    setCloakEnabled(newVal);
+    localStorage.setItem('mathhub_cloak', newVal.toString());
+  };
 
   return html`
     <${Router}>
       <div className="min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
-        <${Navbar} onSearch=${setSearchQuery} />
+        <${Navbar} 
+          onSearch=${setSearchQuery} 
+          onOpenSettings=${() => setIsSettingsOpen(true)} 
+        />
         
         <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-12 flex gap-12">
           <${Sidebar} activeCategory=${activeCategory} onCategoryChange=${setActiveCategory} />
@@ -300,6 +456,13 @@ const MathHubApp = () => {
             <//>
           </div>
         </main>
+
+        <${SettingsModal} 
+          isOpen=${isSettingsOpen} 
+          onClose=${() => setIsSettingsOpen(false)} 
+          cloakEnabled=${cloakEnabled}
+          onToggleCloak=${toggleCloak}
+        />
 
         <footer className="glass-panel border-t border-white/5 py-12 px-6 text-center mt-auto">
           <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-center justify-between gap-6 opacity-30">
