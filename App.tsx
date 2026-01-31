@@ -42,14 +42,12 @@ const StealthProtocol = {
     const doc = win.document;
     doc.title = "Google Docs";
     
-    // Set favicon to Google Docs
     const link = doc.createElement('link') as HTMLLinkElement;
     link.rel = 'icon';
     link.type = 'image/x-icon';
     link.href = 'https://ssl.gstatic.com/docs/documents/images/kix-favicon7.ico';
     doc.head.appendChild(link);
 
-    // Create container and iframe
     const iframe = doc.createElement('iframe');
     iframe.src = url;
     iframe.style.position = 'fixed';
@@ -65,7 +63,6 @@ const StealthProtocol = {
     doc.body.style.overflow = 'hidden';
     doc.body.appendChild(iframe);
 
-    // Redirect current tab to safety
     window.location.replace("https://www.google.com/search?q=calculus+notes+and+study+resources+2025");
   }
 };
@@ -238,13 +235,34 @@ const GameView = ({ games }) => {
   const id = pathname.split('/').pop();
   const game = games.find(g => g.id === id);
   const [guide, setGuide] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadMessage, setLoadMessage] = useState('Initializing operational baseline...');
   const iframeRef = useRef<HTMLIFrameElement>(null);
+
+  const messages = [
+    'Establishing secure uplink...',
+    'Bypassing institutional firewalls...',
+    'Synchronizing tactical modules...',
+    'Calibrating logic vectors...',
+    'Deploying stealth protocols...',
+    'Injecting operational data...',
+  ];
 
   useEffect(() => {
     if (game) {
       getGameGuide(game.title).then(setGuide);
+      setIsLoading(true);
+      setLoadMessage(messages[0]);
     }
     window.scrollTo(0, 0);
+
+    let msgIndex = 0;
+    const interval = setInterval(() => {
+      msgIndex = (msgIndex + 1) % messages.length;
+      setLoadMessage(messages[msgIndex]);
+    }, 2000);
+
+    return () => clearInterval(interval);
   }, [game]);
 
   const enterFullscreen = () => {
@@ -273,13 +291,35 @@ const GameView = ({ games }) => {
       </div>
 
       <div className="group relative aspect-video w-full bg-slate-950 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl">
+        <div className=${`absolute inset-0 bg-[#020617] flex flex-col items-center justify-center z-20 transition-opacity duration-700 ${isLoading ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+          <div className="relative w-24 h-24 mb-10">
+            <div className="absolute inset-0 border-[3px] border-indigo-500/10 rounded-full"></div>
+            <div className="absolute inset-0 border-[3px] border-t-indigo-500 rounded-full animate-spin-slow"></div>
+            <div className="absolute inset-0 m-auto w-10 h-10 flex items-center justify-center text-indigo-500">
+               <${Sigma} className="w-8 h-8" />
+            </div>
+          </div>
+          <div className="space-y-3 text-center">
+            <div className="font-orbitron text-[10px] font-black uppercase tracking-[0.5em] text-indigo-400/80 animate-pulse">
+              ${loadMessage}
+            </div>
+            <div className="flex justify-center gap-1.5">
+              <div className="w-1 h-1 bg-indigo-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+              <div className="w-1 h-1 bg-indigo-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+              <div className="w-1 h-1 bg-indigo-500 rounded-full animate-bounce"></div>
+            </div>
+          </div>
+        </div>
+
         <iframe 
           ref=${iframeRef}
           src="${game.url}" 
           className="w-full h-full border-0" 
           allow="autoplay; fullscreen; keyboard" 
+          onLoad=${() => setIsLoading(false)}
         />
-        <div className="absolute top-6 right-6 flex gap-3 opacity-0 group-hover:opacity-100 transition-all">
+        
+        <div className="absolute top-6 right-6 flex gap-3 opacity-0 group-hover:opacity-100 transition-all z-30">
           <button onClick=${enterFullscreen} className="p-3 bg-black/60 backdrop-blur-xl rounded-2xl border border-white/10 text-white hover:bg-indigo-600 transition-all">
             <${Maximize} className="w-5 h-5" />
           </button>
