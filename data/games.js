@@ -10,30 +10,6 @@ export const GAMES = [
     url: '/kindergarten/index.html'
   },
   {
-    id: '1v1-lol',
-    title: '1v1.LOL',
-    description: 'Tactical close-quarters combat simulation with real-time structural modification. Optimize defensive building logic while engaging high-mobility targets.',
-    category: GameCategory.ACTION,
-    thumbnail: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=600',
-    url: 'https://1v1.lol/'
-  },
-  {
-    id: 'retro-bowl',
-    title: 'Retro Bowl',
-    description: 'Advanced athletic management and strategic offensive coordination. Manage personnel, calculate yardage vectors, and execute tactical plays to dominate the gridiron.',
-    category: GameCategory.STRATEGY,
-    thumbnail: 'https://images.unsplash.com/photo-1566577739112-5180d4bf9390?auto=format&fit=crop&q=80&w=600',
-    url: 'https://game316024.konggames.com/gamez/0031/6024/live/index.html'
-  },
-  {
-    id: 'bitlife',
-    title: 'BitLife',
-    description: 'Socio-economic probability matrix and life-cycle simulation. Navigate the complexities of a simulated life from birth to resolution through statistical choice selection.',
-    category: GameCategory.STRATEGY,
-    thumbnail: 'https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&q=80&w=600',
-    url: 'https://bitlifeonline.io/'
-  },
-  {
     id: 'minecraft-classic',
     title: 'Minecraft Classic',
     description: 'Open-world structural engineering and spatial resource management. Utilize foundational voxels to construct complex geometric structures in a persistent 3D environment.',

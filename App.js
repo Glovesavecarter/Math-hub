@@ -174,7 +174,7 @@ const HomePage = ({ games, searchQuery, activeCategory }) => {
               Secure baseline for high-performance interactive training modules and tactical coordination.
             </p>
             <div className="flex gap-4">
-              <${Link} to="/game/1v1-lol" className="flex items-center gap-3 px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-xl transition-all shadow-xl shadow-indigo-600/30 uppercase text-xs tracking-[0.2em]">
+              <${Link} to="/game/kindergarten" className="flex items-center gap-3 px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-xl transition-all shadow-xl shadow-indigo-600/30 uppercase text-xs tracking-[0.2em]">
                 Initialize Primary Session
                 <${ChevronRight} className="w-4 h-4" />
               <//>

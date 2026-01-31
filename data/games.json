@@ -9,22 +9,6 @@
     "featured": true
   },
   {
-    "id": "1v1-lol",
-    "title": "1v1.LOL",
-    "description": "Tactical close-quarters combat simulation with real-time structural modification.",
-    "category": "Action",
-    "thumbnail": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=600",
-    "url": "https://1v1.lol/"
-  },
-  {
-    "id": "retro-bowl",
-    "title": "Retro Bowl",
-    "description": "Advanced athletic management and strategic offensive coordination.",
-    "category": "Strategy",
-    "thumbnail": "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?auto=format&fit=crop&q=80&w=600",
-    "url": "https://game316024.konggames.com/gamez/0031/6024/live/index.html"
-  },
-  {
     "id": "fnaf-2",
     "title": "FNAF 2",
     "description": "Advanced multi-point surveillance and security optimization module.",
