@@ -2,14 +2,6 @@ import { GameCategory } from '../types.js';
 
 export const GAMES = [
   {
-    id: 'bladeball',
-    title: 'Blade Ball',
-    description: 'High-speed defensive coordination module. Utilize timing and spatial prediction to deflect incoming projectiles.',
-    category: GameCategory.ACTION,
-    thumbnail: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=600',
-    url: 'bladeball/index.html'
-  },
-  {
     id: 'bad-parenting-1',
     title: 'Bad Parenting 1',
     description: 'A psychological survival strategy module. Navigate complex household dynamics and analyze environmental cues.',

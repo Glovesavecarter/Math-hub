@@ -2,17 +2,9 @@ import { GameCategory } from '../types.ts';
 
 export const GAMES = [
   {
-    id: 'bladeball',
-    title: 'Blade Ball',
-    description: 'High-speed defensive coordination module. Master momentum and defensive blade-work to deflect incoming logic projectiles.',
-    category: GameCategory.ACTION,
-    thumbnail: 'https://cdn.jsdelivr.net/gh/gn-math/covers@main/167.png',
-    url: 'bladeball/index.html'
-  },
-  {
     id: 'bad-parenting-1',
     title: 'Bad Parenting 1',
-    description: 'Analyze environmental cues and manage household dynamics in this survival strategy simulation.',
+    description: 'A dark psychological module requiring deep analysis of environmental cues and household power dynamics. High stakes decision-making in a high-tension atmosphere.',
     category: GameCategory.STRATEGY,
     thumbnail: 'https://images.unsplash.com/photo-1505632958218-4f23394784a6?auto=format&fit=crop&q=80&w=600',
     url: 'https://genizymath.github.io/iframe/166.html'
@@ -20,15 +12,23 @@ export const GAMES = [
   {
     id: 'kindergarten',
     title: 'Kindergarten',
-    description: 'A tactical social interaction simulator. Complete daily objectives through complex decision making.',
+    description: 'Strategic social interaction simulation. Complete daily operational objectives through complex dialogue trees and tactical inventory management.',
     category: GameCategory.STRATEGY,
     thumbnail: 'https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=600',
     url: 'https://genizymath.github.io/iframe/445.html'
   },
   {
+    id: 'kindergarten-2',
+    title: 'Kindergarten 2',
+    description: 'The advanced sequel to the primary social simulation module. Enhanced tactical complexity and expanded operational zones.',
+    category: GameCategory.STRATEGY,
+    thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&q=80&w=600',
+    url: 'https://genizymath.github.io/iframe/446.html'
+  },
+  {
     id: 'slope',
     title: 'Slope',
-    description: 'High-speed 3D spatial reasoning module. Navigate gravity-defying obstacle courses.',
+    description: 'High-speed 3D spatial reasoning module. Calibrate reflexes to navigate gravity-defying obstacle vectors at extreme velocities.',
     category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=600',
     url: 'https://azgames.io/game/xlope/'
@@ -36,9 +36,25 @@ export const GAMES = [
   {
     id: 'cookie-clicker',
     title: 'Cookie Clicker',
-    description: 'Optimize resource production vectors through incremental growth and tactical management.',
+    description: 'Optimize resource production vectors through incremental growth algorithms and tactical asset management.',
     category: GameCategory.STRATEGY,
     thumbnail: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&q=80&w=600',
     url: 'https://orteil.dashnet.org/cookieclicker/'
+  },
+  {
+    id: 'escape-road',
+    title: 'Escape Road',
+    description: 'Tactical navigation module involving high-stakes pathfinding and obstacle avoidance in a high-density urban environment.',
+    category: GameCategory.ACTION,
+    thumbnail: 'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&q=80&w=600',
+    url: 'https://genizymath.github.io/iframe/264.html'
+  },
+  {
+    id: 'jelly-drift',
+    title: 'Jelly Drift',
+    description: 'Kinetic logic challenge focusing on momentum conservation and high-precision spatial maneuvering.',
+    category: GameCategory.ACTION,
+    thumbnail: 'https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&q=80&w=600',
+    url: 'https://genizymath.github.io/iframe/543.html'
   }
 ];

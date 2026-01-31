@@ -12,6 +12,8 @@
             padding: 0;
             overflow: hidden;
             background: #000;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
         }
         #unity-container {
             width: 100%;
@@ -37,35 +39,35 @@
             justify-content: center;
             align-items: center;
             background: #020617;
-            z-index: 10;
+            z-index: 100;
         }
         .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            width: 50px;
-            height: 50px;
+            border: 4px solid rgba(99, 102, 241, 0.1);
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             border-left-color: #6366f1;
             animation: spin 1s linear infinite;
+            margin-bottom: 24px;
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
         #status-text {
-            margin-top: 20px;
             color: #6366f1;
             font-family: 'Orbitron', sans-serif;
             font-weight: 800;
             letter-spacing: 2px;
             text-transform: uppercase;
-            font-size: 14px;
+            font-size: 12px;
+            margin-bottom: 16px;
         }
-        #progress-bar {
-            width: 200px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            margin-top: 20px;
-            border-radius: 2px;
+        .progress-container {
+            width: 240px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
             overflow: hidden;
         }
         #progress-fill {
@@ -73,23 +75,25 @@
             height: 100%;
             background: #6366f1;
             transition: width 0.3s ease;
+            box-shadow: 0 0 10px #6366f1;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800&family=Inter:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body class="dark">
     <div id="unity-container">
         <canvas id="unity-canvas"></canvas>
     </div>
+
     <div id="loading-cover">
         <div class="spinner"></div>
-        <div id="status-text">INITIALIZING ENGINE... 0%</div>
-        <div id="progress-bar">
+        <div id="status-text">CALIBRATING TACTICAL CORE... 0%</div>
+        <div class="progress-container">
             <div id="progress-fill"></div>
         </div>
     </div>
 
-    <!-- Required SDKs and Analytics -->
+    <!-- Analytics & Monetization SDKs -->
     <script async src="https://www.google-analytics.com/analytics.js"></script>
     <script type="text/javascript" id="analytics" async src="https://cdn.jsdelivr.net/gh/st39/sdk@main/ga.js"></script>
     <script type="text/javascript" async src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
@@ -115,18 +119,45 @@
         })(document, "script", "gamemonetize-sdk");
     </script>
 
-    <!-- Game Mocks to prevent SDK-related script errors during initialization -->
+    <!-- Global SDK Mocks for Unity/Yandex Compatibility -->
     <script>
-        window.LanguageRequest = function() { console.log('Mock: Language Requested'); };
-        window.RequestingEnvironmentData = function() { console.log('Mock: Env Data Requested'); };
-        window.FullAdShow = function() { console.log('Mock: Ad Shown'); };
-        window.RewardedShow = function() { console.log('Mock: Reward Shown'); };
+        var myGameInstance = null;
+        
+        // Mocking Yandex SDK calls that the game logic expects
+        window.InitSDK = function() { console.log('Mock: SDK Initialized'); };
+        window.InitGame = function() { console.log('Mock: Game Initialized'); };
+        window.InitPlayer = function() { 
+            console.log('Mock: Player Initialized');
+            if (myGameInstance) {
+                myGameInstance.SendMessage('YandexGame', 'SetInitializationSDK', JSON.stringify({
+                    "playerAuth": "rejected",
+                    "playerName": "unauthorized",
+                    "playerId": "unauthorized",
+                    "playerPhoto": "null"
+                }));
+            }
+        };
+        window.FullAdShow = function() { 
+            console.log('Mock: Showing Fullscreen Ad');
+            if(myGameInstance) myGameInstance.SendMessage("YandexGame", "CloseFullAd", "false"); 
+        };
+        window.RewardedShow = function() { 
+            console.log('Mock: Showing Rewarded Ad');
+            if(myGameInstance) myGameInstance.SendMessage("YandexGame", "CloseVideo"); 
+        };
+        window.LanguageRequest = function() { 
+            if(myGameInstance) myGameInstance.SendMessage('YandexGame', 'SetLanguage', 'en'); 
+        };
+        window.RequestingEnvironmentData = function() {
+            if(myGameInstance) myGameInstance.SendMessage('YandexGame', 'SetEnvironmentData', JSON.stringify({"language": "en"}));
+        };
     </script>
 
-    <!-- Unity Engine Loader -->
+    <!-- Unity Engine Loader & Config -->
     <script>
         const buildUrl = "https://cdn.jsdelivr.net/gh/Loddypof/gitapp@581c119c1d6222694218df114c2da57271ab67e7/template";
         const loaderUrl = buildUrl + "/blb.js";
+        
         const config = {
           dataUrl: buildUrl + "/blb.data.unityweb",
           frameworkUrl: buildUrl + "/blb.framework.js.unityweb",
@@ -147,14 +178,19 @@
         script.onload = () => {
           createUnityInstance(canvas, config, (progress) => {
             const percentage = Math.round(100 * progress);
-            statusText.innerText = "INITIALIZING ENGINE... " + percentage + "%";
+            statusText.innerText = "CALIBRATING TACTICAL CORE... " + percentage + "%";
             progressFill.style.width = percentage + "%";
           }).then((unityInstance) => {
-            loadingCover.style.display = "none";
-            window.gameInstance = unityInstance;
+            myGameInstance = unityInstance;
+            // Short delay for visual transition
+            setTimeout(() => {
+                loadingCover.style.opacity = '0';
+                loadingCover.style.pointerEvents = 'none';
+                setTimeout(() => loadingCover.style.display = "none", 500);
+            }, 500);
           }).catch((message) => {
-            console.error("Initialization Failed:", message);
-            statusText.innerText = "INITIALIZATION ERROR";
+            console.error("Initialization failed:", message);
+            statusText.innerText = "CRITICAL ERROR: MODULE FAILED";
             statusText.style.color = "#ef4444";
           });
         };
