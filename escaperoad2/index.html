@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Roads 2 | Tactical Module</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; color: #fff; }
+        #unity-container { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+        #unity-canvas { background: #000; max-width: 100%; max-height: 100%; cursor: default; }
+        .loader { 
+            position: absolute;
+            color: #6366f1; 
+            font-family: 'Orbitron', sans-serif; 
+            font-weight: bold; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            letter-spacing: 4px; 
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div id="unity-container">
+        <p style="opacity: 0;position: absolute;">_</p>
+        <canvas id="unity-canvas" width="725" height="711"></canvas>
+        <div id="loading-cover" class="loader">SYNCHRONIZING ESCAPE PROTOCOLS...</div>
+    </div>
+
+    <script>
+        const container = document.querySelector("#unity-container");
+        const canvas = document.querySelector("#unity-canvas");
+        const loadingCover = document.querySelector("#loading-cover");
+        
+        // Configuration provided by user
+        const buildUrl = "https://1games.io/game/escape-road-2/Build/"; // Presumed path based on iframe src
+        const loaderUrl = "data:application/javascript;base64,ZnVuY3Rpb24gY3JlYXRlVW5pdHlJbnN0YW5jZSh0LG4sbCl7ZnVuY3Rpb24gZChlLHQpe2lmKCFkLmFib3J0ZWQmJm4uc2hvd0Jhbm5lcilyZXR1cm4iZXJyb3IiPT10JiYoZC5hYm9ydGVkJiYodC5oaWRlU3Bpbm5lcihiKSwxKSksImNvbm5lY3Rpb25FcnJvciI9PTt8fCJodHRwRXJyb3IiPT0uLi4=";
+
+        const config = {
+            dataUrl: buildUrl + "EscapeRoad2.data",
+            frameworkUrl: buildUrl + "EscapeRoad2.framework.js",
+            codeUrl: buildUrl + "EscapeRoad2.wasm",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "MathHub",
+            productName: "EscapeRoad2",
+            productVersion: "1.0",
+        };
+
+        const script = document.createElement("script");
+        script.src = loaderUrl;
+        script.onload = () => {
+            if (typeof createUnityInstance !== "undefined") {
+                createUnityInstance(canvas, config, (progress) => {
+                    loadingCover.innerText = "DEPLOYING MODULE: " + Math.round(100 * progress) + "%";
+                }).then((unityInstance) => {
+                    loadingCover.style.display = "none";
+                }).catch((message) => {
+                    console.error(message);
+                    loadingCover.innerText = "LOAD FAILED";
+                });
+            } else {
+                // Fallback to iframe if loader injection fails
+                container.innerHTML = `<iframe style="width:100%; height:100%; border:none;" src="https://1games.io/game/escape-road-2/"></iframe>`;
+            }
+        };
+        document.body.appendChild(script);
+    </script>
+</body>
+</html>

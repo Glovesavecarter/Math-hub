@@ -1,16 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import htm from 'htm';
-import MathHubApp from './App.js';
+import MathHubApp from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
 const mount = () => {
   const rootElement = document.getElementById('root');
-  if (!rootElement) {
-    console.error("Root element not found");
-    return;
-  }
+  if (!rootElement) return;
 
   try {
     const root = ReactDOM.createRoot(rootElement);
@@ -19,7 +16,6 @@ const mount = () => {
         <${MathHubApp} />
       <//>
     `);
-    console.log("App mounted successfully");
   } catch (error) {
     console.error("Mounting error:", error);
     rootElement.innerHTML = `<div style="padding: 5rem; color: white; text-align: center; font-family: sans-serif;">
@@ -29,8 +25,4 @@ const mount = () => {
   }
 };
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', mount);
-} else {
-  mount();
-}
+mount();

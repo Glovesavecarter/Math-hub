@@ -50,14 +50,6 @@ export const GAMES = [
     url: 'https://rocketgoal.io/?sdk=crazy&skipPrerollFirstSession=true'
   },
   {
-    id: 'escape-road-2',
-    title: 'Escape Roads 2',
-    description: 'A high-intensity strategic evasion simulator. Calculate optimal escape vectors and navigate complex road networks using the latest engine updates.',
-    category: GameCategory.ACTION,
-    thumbnail: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=600',
-    url: 'https://1games.io/game/escape-road-2/'
-  },
-  {
     id: 'slope',
     title: 'Slope',
     description: 'High-speed 3D spatial reasoning challenge. Navigate gravity-defying courses with precision.',
