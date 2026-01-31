@@ -1,5 +1,14 @@
 [
   {
+    "id": "clusterrush",
+    "title": "Cluster Rush",
+    "description": "High-speed kinetic platforming. Master momentum and shifting platforms.",
+    "category": "Action",
+    "thumbnail": "https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&q=80&w=600",
+    "url": "/clusterrush/index.html",
+    "featured": true
+  },
+  {
     "id": "bad-parenting-1",
     "title": "Bad Parenting 1",
     "description": "A psychological survival strategy module. Navigate complex household dynamics and analyze environmental cues.",

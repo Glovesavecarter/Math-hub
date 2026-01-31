@@ -5,14 +5,24 @@ import MathHubApp from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-const rootElement = document.getElementById('root');
-if (!rootElement) {
-  throw new Error("Could not find root element to mount to");
-}
+let root: ReactDOM.Root | null = null;
 
-const root = ReactDOM.createRoot(rootElement);
-root.render(html`
-  <${React.StrictMode}>
-    <${MathHubApp} />
-  <//>
-`);
+const mount = () => {
+  const rootElement = document.getElementById('root');
+  if (rootElement && !root) {
+    root = ReactDOM.createRoot(rootElement);
+    root.render(
+      html`
+        <${React.StrictMode}>
+          <${MathHubApp} />
+        <//>
+      `
+    );
+  }
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', mount);
+} else {
+  mount();
+}

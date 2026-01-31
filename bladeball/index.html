@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Blade Ball | Defensive Engine</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        #unity-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #unity-canvas {
+            width: 100%;
+            height: 100%;
+            background: #231F20;
+        }
+        #loading-cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #020617;
+            z-index: 10;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border-left-color: #6366f1;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #status-text {
+            margin-top: 20px;
+            color: #6366f1;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        #progress-bar {
+            width: 200px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            margin-top: 20px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        #progress-fill {
+            width: 0%;
+            height: 100%;
+            background: #6366f1;
+            transition: width 0.3s ease;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800&display=swap" rel="stylesheet">
+</head>
+<body class="dark">
+    <div id="unity-container">
+        <canvas id="unity-canvas"></canvas>
+    </div>
+    <div id="loading-cover">
+        <div class="spinner"></div>
+        <div id="status-text">INITIALIZING ENGINE... 0%</div>
+        <div id="progress-bar">
+            <div id="progress-fill"></div>
+        </div>
+    </div>
+
+    <!-- Required SDKs and Analytics -->
+    <script async src="https://www.google-analytics.com/analytics.js"></script>
+    <script type="text/javascript" id="analytics" async src="https://cdn.jsdelivr.net/gh/st39/sdk@main/ga.js"></script>
+    <script type="text/javascript" async src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+    <script type="text/javascript">
+        window.SDK_OPTIONS = {
+          gameId: "r2tzpy9cgrn2u4xgzc9z0zbtvxm16mby",
+          onEvent: function(a) {
+            switch (a.name) {
+              case "SDK_GAME_PAUSE": break;
+              case "SDK_GAME_START": break;
+              case "SDK_READY": break;
+            }
+          }
+        };
+        (function(a, b, c) {
+          var d = a.getElementsByTagName(b)[0];
+          if (!a.getElementById(c)) {
+            a = a.createElement(b);
+            a.id = c;
+            a.src = "https://cdn.jsdelivr.net/gh/st39/sdk@main/sdkjs.js";
+            d.parentNode.insertBefore(a, d);
+          }
+        })(document, "script", "gamemonetize-sdk");
+    </script>
+
+    <!-- Game Mocks to prevent SDK-related script errors during initialization -->
+    <script>
+        window.LanguageRequest = function() { console.log('Mock: Language Requested'); };
+        window.RequestingEnvironmentData = function() { console.log('Mock: Env Data Requested'); };
+        window.FullAdShow = function() { console.log('Mock: Ad Shown'); };
+        window.RewardedShow = function() { console.log('Mock: Reward Shown'); };
+    </script>
+
+    <!-- Unity Engine Loader -->
+    <script>
+        const buildUrl = "https://cdn.jsdelivr.net/gh/Loddypof/gitapp@581c119c1d6222694218df114c2da57271ab67e7/template";
+        const loaderUrl = buildUrl + "/blb.js";
+        const config = {
+          dataUrl: buildUrl + "/blb.data.unityweb",
+          frameworkUrl: buildUrl + "/blb.framework.js.unityweb",
+          codeUrl: buildUrl + "/blb.wasm.unityweb",
+          streamingAssetsUrl: "StreamingAssets",
+          companyName: "MathHub",
+          productName: "Blade Ball",
+          productVersion: "1.0",
+        };
+
+        const canvas = document.querySelector("#unity-canvas");
+        const loadingCover = document.querySelector("#loading-cover");
+        const statusText = document.querySelector("#status-text");
+        const progressFill = document.querySelector("#progress-fill");
+
+        const script = document.createElement("script");
+        script.src = loaderUrl;
+        script.onload = () => {
+          createUnityInstance(canvas, config, (progress) => {
+            const percentage = Math.round(100 * progress);
+            statusText.innerText = "INITIALIZING ENGINE... " + percentage + "%";
+            progressFill.style.width = percentage + "%";
+          }).then((unityInstance) => {
+            loadingCover.style.display = "none";
+            window.gameInstance = unityInstance;
+          }).catch((message) => {
+            console.error("Initialization Failed:", message);
+            statusText.innerText = "INITIALIZATION ERROR";
+            statusText.style.color = "#ef4444";
+          });
+        };
+        document.body.appendChild(script);
+    </script>
+</body>
+</html>
