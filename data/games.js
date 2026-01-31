@@ -7,7 +7,7 @@ export const GAMES = [
     description: 'A strategic social interaction simulator with high-stakes decision making. Navigate complex classroom hierarchies and solve environmental puzzles to complete the objective cycle.',
     category: GameCategory.STRATEGY,
     thumbnail: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=600',
-    url: '/kindergarten/index.html'
+    url: 'https://genizymath.github.io/iframe/445.html'
   },
   {
     id: 'minecraft-classic',
@@ -47,7 +47,7 @@ export const GAMES = [
     description: 'A high-intensity strategic evasion simulator. Calculate optimal escape vectors and navigate complex road networks using the latest engine updates.',
     category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=600',
-    url: '/escaperoad/index.html'
+    url: 'https://1games.io/game/escape-road-2/'
   },
   {
     id: 'slope',
@@ -79,6 +79,6 @@ export const GAMES = [
     description: 'The tactical navigation challenge that started it all. Updated with the latest coordination script.',
     category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&q=80&w=600',
-    url: '/escaperoad/index.html'
+    url: 'https://azgames.io/game/escape-road/'
   }
 ];
