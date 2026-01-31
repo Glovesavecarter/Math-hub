@@ -1,23 +1,28 @@
-
 [
   {
-    "id": "escape-road-2",
-    "title": "Escape Roads 2",
-    "description": "A high-intensity strategic evasion simulator. Calculate optimal escape vectors and navigate complex road networks under pressure to master spatial logic.",
-    "category": "Action",
-    "thumbnail": "https://picsum.photos/seed/escape/400/300",
-    "url": "https://1games.io/game/escape-road-2/",
-    
+    "id": "kindergarten",
+    "title": "Kindergarten",
+    "description": "A strategic social interaction simulator with high-stakes decision making. Navigate complex classroom hierarchies and solve environmental puzzles to complete the objective cycle.",
+    "category": "Strategy",
+    "thumbnail": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=600",
+    "url": "https://genizymath.github.io/iframe/445.html",
     "featured": true
   },
   {
-    "id": "escape-road",
-    "title": "Escape Road",
-    "description": "A high-stakes tactical navigation challenge. Plan your route through urban obstacles to evade pursuers using real-time spatial logic.",
+    "id": "fnaf-2",
+    "title": "FNAF 2",
+    "description": "Advanced multi-point surveillance and security optimization module. Coordinate defensive protocols and monitor power distribution across a high-risk facility network.",
     "category": "Action",
-    "thumbnail": "https://picsum.photos/seed/escape-road/400/300",
-    "url": "https://azgames.io/game/escape-road/",
-    
+    "thumbnail": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=600",
+    "url": "https://run3.io/popgame/fnaf/fnaf2.html"
+  },
+  {
+    "id": "escape-road-2",
+    "title": "Escape Roads 2",
+    "description": "A high-intensity strategic evasion simulator. Calculate optimal escape vectors and navigate complex road networks using the latest engine updates.",
+    "category": "Action",
+    "thumbnail": "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=600",
+    "url": "/escaperoad/index.html",
     "featured": true
   },
   {
@@ -27,7 +32,6 @@
     "category": "Action",
     "thumbnail": "https://picsum.photos/seed/slope/400/300",
     "url": "https://azgames.io/game/xlope/",
-    
     "featured": true
   },
   {
@@ -37,7 +41,6 @@
     "category": "Retro",
     "thumbnail": "https://picsum.photos/seed/pacman/400/300",
     "url": "https://www.google.com/logos/2010/pacman10-i.html",
-    ,
     "featured": true
   },
   {
@@ -46,17 +49,15 @@
     "description": "The ultimate idle game about baking cookies.",
     "category": "Adventure",
     "thumbnail": "https://picsum.photos/seed/cookie/400/300",
-    "url": "https://orteil.dashnet.org/cookieclicker/",
-    
+    "url": "https://orteil.dashnet.org/cookieclicker/"
   },
   {
     "id": "granny",
     "title": "Granny",
-    "description": "A stealth-based survival logic challenge. Analyze sound propagation and master environmental awareness to navigate complex indoor architecture and escape.",
+    "description": "A stealth-based survival logic challenge. Analyze sound propagation and master environmental awareness to navigate complex architecture.",
     "category": "Action",
     "thumbnail": "https://picsum.photos/seed/granny/400/300",
     "url": "https://gnhustgames.org/granny-source/",
-    
     "featured": true
   },
   {
@@ -65,34 +66,6 @@
     "description": "The world-famous block-stacking puzzle game.",
     "category": "Puzzle",
     "thumbnail": "https://picsum.photos/seed/tetris/400/300",
-    "url": "https://tetris.com/play-tetris",
-    
-  },
-  {
-    "id": "t-rex-run",
-    "title": "Chrome Dino",
-    "description": "The classic runner game from Google Chrome.",
-    "category": "Action",
-    "thumbnail": "https://picsum.photos/seed/dino/400/300",
-    "url": "https://chromedino.com/",
-    
-  },
-  {
-    "id": "snake",
-    "title": "Google Snake",
-    "description": "Grow your snake by eating apples.",
-    "category": "Retro",
-    "thumbnail": "https://picsum.photos/seed/snake/400/300",
-    "url": "https://www.google.com/logos/2010/pacman10-i.html",
-    
-  },
-  {
-    "id": "flappy-bird",
-    "title": "Flappy Bird",
-    "description": "Avoid the pipes and fly as far as you can.",
-    "category": "Action",
-    "thumbnail": "https://picsum.photos/seed/flappy/400/300",
-    "url": "https://flappybird.io/",
-    
+    "url": "https://tetris.com/play-tetris"
   }
 ]

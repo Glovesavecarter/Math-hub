@@ -247,6 +247,7 @@ const GameDetail = ({ games }) => {
           src="${game.url}" 
           title="${game.title}"
           className="w-full h-full border-0"
+          allow="autoplay; fullscreen; keyboard; gamepad"
           allowFullScreen
           loading="lazy"
         />

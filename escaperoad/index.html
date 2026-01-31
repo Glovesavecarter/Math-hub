@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Road | Tactical Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; color: #fff; }
+        #unity-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
+        #unity-canvas { width: 100%; height: 100%; background: #000; }
+        .loader { 
+            position: absolute;
+            color: #6366f1; 
+            font-family: 'Orbitron', sans-serif; 
+            font-weight: bold; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            letter-spacing: 4px; 
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div id="unity-container">
+        <canvas id="unity-canvas"></canvas>
+        <div id="loading-text" class="loader">INITIALIZING TACTICAL MODULE...</div>
+    </div>
+    <script>
+        // Unity Loader script initialization
+        const canvas = document.querySelector("#unity-canvas");
+        const loadingText = document.querySelector("#loading-text");
+
+        const config = {
+            dataUrl: "Build/EscapeRoad.data",
+            frameworkUrl: "Build/EscapeRoad.framework.js",
+            codeUrl: "Build/EscapeRoad.wasm",
+            streamingAssetsUrl: "StreamingAssets",
+            companyName: "MathHub",
+            productName: "Escape Road",
+            productVersion: "1.0",
+        };
+
+        const script = document.createElement("script");
+        script.src = "Build/UnityLoader.js";
+        script.onload = () => {
+            if (typeof createUnityInstance !== "undefined") {
+                createUnityInstance(canvas, config, (progress) => {
+                    loadingText.innerText = "LOADING: " + Math.round(100 * progress) + "%";
+                }).then(() => {
+                    loadingText.style.display = "none";
+                }).catch((err) => {
+                    loadingText.innerText = "MODULE INITIALIZATION ERROR";
+                    console.error(err);
+                });
+            } else {
+                loadingText.innerText = "LOADER SCRIPT FAILURE";
+            }
+        };
+        script.onerror = () => {
+            loadingText.innerText = "TACTICAL ASSETS NOT FOUND";
+        };
+        document.body.appendChild(script);
+    </script>
+</body>
+</html>
