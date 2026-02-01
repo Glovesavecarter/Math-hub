@@ -73,6 +73,26 @@
             0% { bottom: 100%; }
             100% { bottom: -100px; }
         }
+
+        /* Performance boost class */
+        .gpu-uplink {
+            will-change: transform;
+            transform: translate3d(0,0,0);
+        }
+        .ultra-light .glass-panel {
+            backdrop-filter: none !important;
+            background: rgba(15, 23, 42, 0.95) !important;
+        }
+        .ultra-light * {
+            box-shadow: none !important;
+            text-shadow: none !important;
+        }
+        .throttled-animations .animate-spin-slow,
+        .throttled-animations .scanline,
+        .throttled-animations .animate-pulse {
+            animation: none !important;
+            display: none !important;
+        }
     </style>
     <script type="importmap">
 {
@@ -89,7 +109,7 @@
 }
 </script>
 </head>
-<body>
+<body class="selection:bg-indigo-500/30 selection:text-indigo-200">
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>
 </body>
