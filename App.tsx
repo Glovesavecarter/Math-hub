@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
@@ -186,7 +185,7 @@ const Sidebar = () => {
       <div className="space-y-1">
         <p className="px-4 text-[10px] font-black uppercase tracking-widest text-slate-600 mb-6">Uplink Directory</p>
         ${items.map(item => html`
-          <${Link} to="${item.path}" className=${`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-xs font-bold transition-all ${location.pathname === item.path ? 'bg-indigo-600/10 text-indigo-400 border border-indigo-500/20' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}>
+          <${Link} key=${item.id} to="${item.path}" className=${`w-full flex items-center gap-4 px-4 py-3.5 rounded-xl text-xs font-bold transition-all ${location.pathname === item.path ? 'bg-indigo-600/10 text-indigo-400 border border-indigo-500/20' : 'text-slate-500 hover:text-white hover:bg-white/5'}`}>
             <${item.icon} className="w-4 h-4" />
             ${item.name}
           <//>
@@ -237,22 +236,18 @@ const HomePage = ({ games, searchQuery }) => {
   `;
 };
 
-const GameView = ({ games, performanceSettings }) => {
+const GameView = ({ games }) => {
   const { pathname } = useLocation();
   const id = pathname.split('/').pop();
   const game = games.find(g => g.id === id);
   const [guide, setGuide] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [progress, setProgress] = useState(0);
   
   useEffect(() => {
     if (game) {
       getGameGuide(game.title).then(setGuide);
       setIsLoading(true);
-      setProgress(0);
       window.scrollTo(0, 0);
-      const interval = setInterval(() => setProgress(p => (p < 90 ? p + Math.random() * 10 : p)), 500);
-      return () => clearInterval(interval);
     }
   }, [game]);
 
@@ -300,9 +295,24 @@ const MathHubApp = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [cloakEnabled, setCloakEnabled] = useState(() => localStorage.getItem('hub_cloak') === 'true');
   const [performanceSettings, setPerformanceSettings] = useState(() => {
-    const saved = localStorage.getItem('hub_performance');
-    return saved ? JSON.parse(saved) : { gpuBoost: true, ultraLight: false };
+    try {
+      const saved = localStorage.getItem('hub_performance');
+      return saved ? JSON.parse(saved) : { gpuBoost: true, ultraLight: false };
+    } catch {
+      return { gpuBoost: true, ultraLight: false };
+    }
   });
+
+  // Handle emergency loader dismissal
+  useEffect(() => {
+    const loader = document.getElementById('emergency-loader');
+    if (loader) {
+      setTimeout(() => {
+        loader.style.opacity = '0';
+        setTimeout(() => loader.style.display = 'none', 500);
+      }, 800);
+    }
+  }, []);
 
   useEffect(() => {
     const handlePanic = (e) => {
@@ -313,10 +323,14 @@ const MathHubApp = () => {
   }, []);
 
   useEffect(() => {
-    // FIX: Convert boolean cloakEnabled to string to satisfy localStorage.setItem type requirement
     localStorage.setItem('hub_cloak', String(cloakEnabled));
     document.title = cloakEnabled ? "Google Docs" : "Math Hub | Command Center";
   }, [cloakEnabled]);
+
+  useEffect(() => {
+    localStorage.setItem('hub_performance', JSON.stringify(performanceSettings));
+    document.body.classList.toggle('ultra-light', performanceSettings.ultraLight);
+  }, [performanceSettings]);
 
   const updatePerformance = (key, val) => setPerformanceSettings(p => ({ ...p, [key]: val }));
 
@@ -329,7 +343,7 @@ const MathHubApp = () => {
         <div className="flex-1 min-w-0">
           <${Routes}>
             <${Route} path="/" element=${html`<${HomePage} games=${GAMES} searchQuery=${searchQuery} />`} />
-            <${Route} path="/game/:id" element=${html`<${GameView} games=${GAMES} performanceSettings=${performanceSettings} />`} />
+            <${Route} path="/game/:id" element=${html`<${GameView} games=${GAMES} />`} />
             <${Route} path="/settings" element=${html`
               <${SettingsView} 
                 cloakEnabled=${cloakEnabled} 
