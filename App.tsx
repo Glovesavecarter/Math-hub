@@ -29,7 +29,8 @@ import {
   Wind,
   Trash2,
   RefreshCw,
-  Sun
+  Sun,
+  Layout
 } from 'lucide-react';
 import htm from 'htm';
 import { GameCategory } from './types.ts';
@@ -89,22 +90,24 @@ const SettingsView = ({ cloakEnabled, onToggleCloak, performanceSettings, onUpda
         <p className="text-sm text-slate-500 font-bold uppercase tracking-widest">Global Operational Parameters</p>
       </div>
 
-      <div className="space-y-8">
-        <div className="space-y-6">
+      <div className="space-y-10">
+        <section className="space-y-6">
           <h3 className="text-[10px] font-black text-indigo-500 uppercase tracking-[0.4em] flex items-center gap-2">
             <${Shield} className="w-3 h-3" />
             01 // Security Protocols
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="p-8 rounded-[2rem] bg-indigo-600/5 border border-indigo-500/10 space-y-6">
-              <div className="flex items-center gap-4 text-indigo-400">
-                <${Ghost} className="w-6 h-6" />
-                <h3 className="text-sm font-black text-white uppercase tracking-widest">Stealth Uplink</h3>
+            <div className="p-8 rounded-[2rem] bg-indigo-600/5 border border-indigo-500/10 space-y-6 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-4 text-indigo-400 mb-4">
+                  <${Ghost} className="w-6 h-6" />
+                  <h3 className="text-sm font-black text-white uppercase tracking-widest">Stealth Uplink</h3>
+                </div>
+                <p className="text-xs text-slate-400 leading-relaxed font-medium">
+                  Initializes an isolated about:blank wrapper to bypass local browser history and session logging.
+                </p>
               </div>
-              <p className="text-xs text-slate-400 leading-relaxed font-medium">
-                Launches an isolated about:blank wrapper to clear local browser history.
-              </p>
-              <button onClick=${StealthProtocol.launch} className="w-full flex items-center justify-center gap-3 py-5 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl transition-all uppercase text-[10px] tracking-widest">
+              <button onClick=${StealthProtocol.launch} className="w-full flex items-center justify-center gap-3 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-xl transition-all uppercase text-[10px] tracking-widest shadow-lg shadow-indigo-600/20">
                 <${ExternalLink} className="w-4 h-4" />
                 Execute Protocol
               </button>
@@ -119,30 +122,35 @@ const SettingsView = ({ cloakEnabled, onToggleCloak, performanceSettings, onUpda
               </div>
               <div className="space-y-2">
                 <h3 className="text-sm font-black text-white uppercase tracking-widest">Tab Masking</h3>
-                <p className="text-xs text-slate-500 font-medium">Instantly disguise tab as "Google Docs".</p>
+                <p className="text-xs text-slate-500 font-medium">Instantly disguise tab metadata as "Google Docs".</p>
               </div>
             </button>
           </div>
-        </div>
+        </section>
 
-        <div className="space-y-6">
+        <section className="space-y-6">
           <h3 className="text-[10px] font-black text-indigo-500 uppercase tracking-[0.4em] flex items-center gap-2">
             <${Zap} className="w-3 h-3" />
-            02 // Performance
+            02 // Neural Tuning
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <button onClick=${() => onUpdatePerformance('gpuBoost', !performanceSettings.gpuBoost)} className=${`flex flex-col p-8 rounded-[2rem] border transition-all text-left ${performanceSettings.gpuBoost ? 'bg-indigo-500/10 border-indigo-500/20' : 'bg-slate-900/50 border-white/5 hover:bg-white/5'}`}>
-              <${Cpu} className=${`w-6 h-6 mb-6 ${performanceSettings.gpuBoost ? 'text-indigo-400' : 'text-slate-600'}`} />
-              <h3 className="text-sm font-black text-white uppercase tracking-widest">Hardware Uplink</h3>
-              <p className="text-xs text-slate-500 font-medium mt-2">Force discrete GPU utilization.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <button onClick=${() => onUpdatePerformance('gpuBoost', !performanceSettings.gpuBoost)} className=${`flex flex-col p-6 rounded-[2rem] border transition-all text-left ${performanceSettings.gpuBoost ? 'bg-indigo-500/10 border-indigo-500/20' : 'bg-slate-900/50 border-white/5 hover:bg-white/5'}`}>
+              <${Cpu} className=${`w-6 h-6 mb-4 ${performanceSettings.gpuBoost ? 'text-indigo-400' : 'text-slate-600'}`} />
+              <h3 className="text-xs font-black text-white uppercase tracking-widest">Hardware Uplink</h3>
+              <p className="text-[10px] text-slate-500 font-medium mt-1">Enable GPU-accelerated frame buffering.</p>
             </button>
-            <button onClick=${() => onUpdatePerformance('ultraLight', !performanceSettings.ultraLight)} className=${`flex flex-col p-8 rounded-[2rem] border transition-all text-left ${performanceSettings.ultraLight ? 'bg-indigo-500/10 border-indigo-500/20' : 'bg-slate-900/50 border-white/5 hover:bg-white/5'}`}>
-              <${Sun} className=${`w-6 h-6 mb-6 ${performanceSettings.ultraLight ? 'text-indigo-400' : 'text-slate-600'}`} />
-              <h3 className="text-sm font-black text-white uppercase tracking-widest">Low Latency Mode</h3>
-              <p className="text-xs text-slate-500 font-medium mt-2">Disable blurs and visual effects.</p>
+            <button onClick=${() => onUpdatePerformance('ultraLight', !performanceSettings.ultraLight)} className=${`flex flex-col p-6 rounded-[2rem] border transition-all text-left ${performanceSettings.ultraLight ? 'bg-indigo-500/10 border-indigo-500/20' : 'bg-slate-900/50 border-white/5 hover:bg-white/5'}`}>
+              <${Sun} className=${`w-6 h-6 mb-4 ${performanceSettings.ultraLight ? 'text-indigo-400' : 'text-slate-600'}`} />
+              <h3 className="text-xs font-black text-white uppercase tracking-widest">Resource Saver</h3>
+              <p className="text-[10px] text-slate-500 font-medium mt-1">Strip blurs and shadows for high FPS.</p>
+            </button>
+            <button onClick=${() => { localStorage.clear(); window.location.reload(); }} className="flex flex-col p-6 rounded-[2rem] border border-red-500/10 bg-red-500/5 hover:bg-red-500/10 transition-all text-left group">
+              <${Trash2} className="w-6 h-6 mb-4 text-red-400 group-hover:scale-110 transition-transform" />
+              <h3 className="text-xs font-black text-white uppercase tracking-widest">Wipe Memory</h3>
+              <p className="text-[10px] text-slate-500 font-medium mt-1">Clear all local cache and refresh hub.</p>
             </button>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   `;
@@ -164,7 +172,7 @@ const Navbar = ({ onSearch }) => html`
           type="text" 
           placeholder="Scan modules..." 
           onInput=${(e) => onSearch(e.target.value)}
-          className="w-full bg-slate-900/50 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-indigo-500 transition-all text-slate-200"
+          className="w-full bg-slate-900/50 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-indigo-500 transition-all text-slate-200 placeholder:text-slate-600"
         />
       </div>
 
@@ -195,15 +203,19 @@ const Sidebar = () => {
           <//>
         `)}
       </div>
-      <div className="pt-10 border-t border-white/5">
+      <div className="pt-10 border-t border-white/5 space-y-6">
         <div className="p-5 glass-panel rounded-2xl border border-white/5 space-y-4">
-           <div className="flex items-center justify-between text-[10px] font-bold">
-            <span className="text-slate-500 uppercase tracking-widest">Network Status</span>
-            <span className="text-green-500 uppercase">Live</span>
+          <div className="flex items-center justify-between text-[10px] font-bold">
+            <span className="text-slate-500 uppercase tracking-widest">Neural Link</span>
+            <span className="text-indigo-400 uppercase">Synced</span>
           </div>
           <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-            <div className="h-full w-[95%] bg-green-500 shadow-[0_0_8px_#10b981]"></div>
+            <div className="h-full w-[88%] bg-indigo-500 shadow-[0_0_8px_#6366f1]"></div>
           </div>
+        </div>
+        <div className="px-4 py-3 bg-indigo-600/5 rounded-xl border border-indigo-500/10">
+          <p className="text-[10px] font-black text-indigo-400 uppercase mb-2 tracking-widest">System Notice</p>
+          <p className="text-[9px] text-slate-500 leading-relaxed font-bold">Panic key [ESC] is active. Redirects to DVUSD Portal instantly.</p>
         </div>
       </div>
     </aside>
@@ -211,19 +223,39 @@ const Sidebar = () => {
 };
 
 const HomePage = ({ games, searchQuery }) => {
-  const filtered = useMemo(() => games.filter(g => g.title.toLowerCase().includes(searchQuery.toLowerCase())), [games, searchQuery]);
+  const filtered = useMemo(() => {
+    return games.filter(g => g.title.toLowerCase().includes(searchQuery.toLowerCase()));
+  }, [games, searchQuery]);
 
   return html`
     <div className="animate-in space-y-10">
+      <div className="flex items-center justify-between">
+        <div className="space-y-1">
+          <h2 className="text-sm font-black text-white uppercase tracking-[0.3em]">Module Archive</h2>
+          <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">Accessing Baseline Logic Systems</p>
+        </div>
+        <div className="text-[10px] font-bold text-slate-600 uppercase tracking-widest px-4 py-2 glass-panel rounded-lg border border-white/5">
+          ${filtered.length} Active Nodes
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
         ${filtered.map(game => html`
           <${Link} key=${game.id} to="/game/${game.id}" className="command-card flex flex-col glass-panel rounded-3xl overflow-hidden border border-white/5 group shadow-lg">
-            <div className="aspect-[16/10] overflow-hidden relative">
-              <img src="${game.thumbnail}" className="w-full h-full object-cover grayscale-[0.6] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" />
+            <div className="aspect-[16/10] overflow-hidden relative bg-slate-900">
+              <img src="${game.thumbnail}" className="w-full h-full object-cover grayscale-[0.6] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700" loading="lazy" />
               <div className="absolute inset-0 bg-indigo-600/0 group-hover:bg-indigo-600/10 transition-colors"></div>
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="p-3 bg-indigo-600 rounded-full shadow-xl">
+                  <${Play} className="w-5 h-5 text-white fill-current" />
+                </div>
+              </div>
             </div>
             <div className="p-6 space-y-3">
-              <h3 className="font-orbitron text-sm font-bold text-white group-hover:text-indigo-400 truncate">${game.title}</h3>
+              <div className="flex justify-between items-start">
+                <h3 className="font-orbitron text-sm font-bold text-white group-hover:text-indigo-400 truncate pr-4">${game.title}</h3>
+                <${ChevronRight} className="w-4 h-4 text-slate-700 group-hover:text-indigo-500 transition-all" />
+              </div>
               <p className="text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em]">${game.category}</p>
             </div>
           <//>
@@ -239,31 +271,52 @@ const GameView = ({ games, performanceSettings }) => {
   const game = games.find(g => g.id === id);
   const [guide, setGuide] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
   
   useEffect(() => {
     if (game) {
       getGameGuide(game.title).then(setGuide);
       setIsLoading(true);
+      setProgress(0);
       window.scrollTo(0, 0);
+
+      const interval = setInterval(() => {
+        setProgress(p => (p < 90 ? p + Math.random() * 10 : p));
+      }, 500);
+      return () => clearInterval(interval);
     }
   }, [game]);
 
-  if (!game) return html`<div className="p-40 text-center font-orbitron text-slate-500">ERR: DATA_LOST</div>`;
+  const handleLoad = () => {
+    setProgress(100);
+    setTimeout(() => setIsLoading(false), 300);
+  };
+
+  if (!game) return html`<div className="p-40 text-center font-orbitron text-slate-500">ERR: MODULE_MISSING</div>`;
 
   return html`
     <div className="max-w-[1500px] mx-auto px-6 py-10 space-y-10 animate-in">
       <div className="flex items-center justify-between">
         <${Link} to="/" className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-xl">
           <${ArrowLeft} className="w-3.5 h-3.5" />
-          Directory Hub
+          Back to Directory
         <//>
       </div>
 
       <div className=${`group relative aspect-video w-full bg-slate-950 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl ${performanceSettings.gpuBoost ? 'gpu-uplink' : ''}`}>
-        <iframe src="${game.url}" className="w-full h-full border-0" allow="autoplay; fullscreen; keyboard" onLoad=${() => setIsLoading(false)} />
+        <iframe src="${game.url}" className="w-full h-full border-0" allow="autoplay; fullscreen; keyboard" onLoad=${handleLoad} />
         ${isLoading && html`
-          <div className="absolute inset-0 bg-[#020617] flex items-center justify-center">
-            <div className="w-16 h-16 border-t-2 border-indigo-500 rounded-full animate-spin"></div>
+          <div className="absolute inset-0 bg-[#020617] flex flex-col items-center justify-center z-50">
+            <div className="relative mb-8">
+              <div className="w-24 h-24 border-t-2 border-indigo-500 rounded-full animate-spin"></div>
+              <div className="absolute inset-0 m-auto w-12 h-12 border-b-2 border-indigo-400 rounded-full animate-spin-slow"></div>
+            </div>
+            <div className="w-48 space-y-3">
+              <p className="text-[10px] font-black text-white uppercase tracking-widest text-center">Decrypting Module...</p>
+              <div className="h-0.5 bg-white/5 rounded-full overflow-hidden">
+                <div className="h-full bg-indigo-500 transition-all duration-300 shadow-[0_0_8px_#6366f1]" style=${{ width: `${progress}%` }}></div>
+              </div>
+            </div>
           </div>
         `}
       </div>
@@ -271,14 +324,14 @@ const GameView = ({ games, performanceSettings }) => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2 space-y-6">
           <h1 className="font-orbitron text-4xl lg:text-5xl font-black text-white uppercase tracking-tighter">${game.title}</h1>
-          <p className="text-slate-400 text-lg leading-relaxed max-w-4xl">${game.description}</p>
+          <p className="text-slate-400 text-lg leading-relaxed max-w-4xl font-medium">${game.description}</p>
         </div>
         <div className="glass-panel p-8 rounded-[2.5rem] border border-white/5 space-y-6">
           <h4 className="text-[10px] font-black uppercase tracking-widest text-indigo-400 flex items-center gap-2">
             <${Sparkles} className="w-4 h-4" />
-            Operational Feed
+            Tactical Analysis
           </h4>
-          <div className="text-[11px] text-slate-300 font-mono whitespace-pre-wrap leading-relaxed opacity-80">${guide || 'Syncing...'}</div>
+          <div className="text-[11px] text-slate-300 font-mono whitespace-pre-wrap leading-relaxed opacity-80 italic">${guide || 'Generating neural feed...'}</div>
         </div>
       </div>
     </div>
@@ -294,7 +347,9 @@ const MathHubApp = () => {
   });
 
   useEffect(() => {
-    const handlePanic = (e) => e.key === 'Escape' && window.location.replace(PANIC_URL);
+    const handlePanic = (e) => {
+        if (e.key === 'Escape') window.location.replace(PANIC_URL);
+    };
     window.addEventListener('keydown', handlePanic);
     return () => window.removeEventListener('keydown', handlePanic);
   }, []);
@@ -308,7 +363,7 @@ const MathHubApp = () => {
   const updatePerformance = (key, val) => setPerformanceSettings(p => ({ ...p, [key]: val }));
 
   return html`
-    <div className="min-h-screen flex flex-col bg-[#020617]">
+    <div className="min-h-screen flex flex-col bg-[#020617] text-slate-200">
       <${Navbar} onSearch=${setSearchQuery} />
       
       <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-12 flex gap-12">
@@ -329,13 +384,13 @@ const MathHubApp = () => {
         </div>
       </main>
       
-      <footer className="glass-panel border-t border-white/5 py-12 px-6 mt-10 opacity-30">
+      <footer className="glass-panel border-t border-white/5 py-12 px-6 mt-20 opacity-30 text-center">
         <div className="max-w-[1600px] mx-auto flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-slate-500">
           <div className="flex items-center gap-3">
             <${Sigma} className="w-4 h-4 text-indigo-500" />
-            <span>Terminal v4.9.0</span>
+            <span>Terminal Version 5.2.0-Alpha</span>
           </div>
-          <span>Uplink Secure</span>
+          <span>Status: Uplink Secure</span>
         </div>
       </footer>
     </div>
