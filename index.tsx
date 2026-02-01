@@ -5,19 +5,23 @@ import MathHubApp from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-let root: ReactDOM.Root | null = null;
-
 const mount = () => {
   const rootElement = document.getElementById('root');
-  if (rootElement && !root) {
-    root = ReactDOM.createRoot(rootElement);
-    root.render(
-      html`
-        <${React.StrictMode}>
-          <${MathHubApp} />
-        <//>
-      `
-    );
+  if (rootElement) {
+    try {
+      const root = ReactDOM.createRoot(rootElement);
+      root.render(
+        html`
+          <${React.StrictMode}>
+            <${MathHubApp} />
+          <//>
+        `
+      );
+    } catch (error) {
+      console.error("Critical: Math Hub initialization failed.", error);
+    }
+  } else {
+    console.error("Critical: Root element not found in DOM.");
   }
 };
 
