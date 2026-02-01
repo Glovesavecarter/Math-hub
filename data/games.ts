@@ -4,34 +4,34 @@ export const GAMES = [
   {
     id: 'bad-parenting-1',
     title: 'Bad Parenting 1',
-    description: 'A dark psychological module requiring deep analysis of environmental cues and household power dynamics. High stakes decision-making in a high-tension atmosphere.',
+    description: 'A dark psychological module requiring deep analysis of environmental cues. High stakes decision-making in a high-tension atmosphere.',
     category: GameCategory.STRATEGY,
     thumbnail: 'https://images.unsplash.com/photo-1505632958218-4f23394784a6?auto=format&fit=crop&q=80&w=600',
-    url: 'https://genizymath.github.io/iframe/166.html'
+    url: 'https://classroom-6x.github.io/bad-parenting/'
   },
   {
     id: 'kindergarten',
     title: 'Kindergarten',
-    description: 'Strategic social interaction simulation. Complete daily operational objectives through complex dialogue trees and tactical inventory management.',
+    description: 'Strategic social interaction simulation. Complete daily operational objectives through complex dialogue trees.',
     category: GameCategory.STRATEGY,
     thumbnail: 'https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=600',
-    url: 'https://genizymath.github.io/iframe/445.html'
+    url: 'https://classroom-6x.github.io/kindergarten/'
   },
   {
     id: 'kindergarten-2',
     title: 'Kindergarten 2',
-    description: 'The advanced sequel to the primary social simulation module. Enhanced tactical complexity and expanded operational zones.',
+    description: 'Advanced sequel to the primary social simulation module. Enhanced tactical complexity and expanded operational zones.',
     category: GameCategory.STRATEGY,
     thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&q=80&w=600',
-    url: 'https://genizymath.github.io/iframe/446.html'
+    url: 'https://classroom-6x.github.io/kindergarten-2/'
   },
   {
     id: 'slope',
     title: 'Slope',
-    description: 'High-speed 3D spatial reasoning module. Calibrate reflexes to navigate gravity-defying obstacle vectors at extreme velocities.',
+    description: 'High-speed 3D spatial reasoning module. Calibrate reflexes to navigate gravity-defying obstacle vectors.',
     category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=600',
-    url: 'https://azgames.io/game/xlope/'
+    url: 'https://slope-game.github.io/'
   },
   {
     id: 'cookie-clicker',
@@ -44,10 +44,10 @@ export const GAMES = [
   {
     id: 'escape-road',
     title: 'Escape Road',
-    description: 'Tactical navigation module involving high-stakes pathfinding and obstacle avoidance in a high-density urban environment.',
+    description: 'Tactical navigation module involving high-stakes pathfinding in high-density urban environments.',
     category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&q=80&w=600',
-    url: 'https://genizymath.github.io/iframe/264.html'
+    url: 'https://classroom-6x.github.io/escape-road/'
   },
   {
     id: 'jelly-drift',
@@ -55,6 +55,6 @@ export const GAMES = [
     description: 'Kinetic logic challenge focusing on momentum conservation and high-precision spatial maneuvering.',
     category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&q=80&w=600',
-    url: 'https://genizymath.github.io/iframe/543.html'
+    url: 'https://classroom-6x.github.io/jelly-drift/'
   }
 ];
