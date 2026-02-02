@@ -88,7 +88,6 @@
 }
 </script>
     <script>
-        // FAIL-SAFE DISMISSAL
         window.dismissLoader = function() {
             var loader = document.getElementById('emergency-loader');
             if (loader) {
@@ -96,9 +95,9 @@
                 setTimeout(function() { loader.style.visibility = 'hidden'; }, 600);
             }
         };
-        // If app hasn't loaded in 3 seconds, show what we have
+        // Safety timeout
         setTimeout(window.dismissLoader, 3000);
-        window.onerror = window.dismissLoader;
+        window.onerror = function() { window.dismissLoader(); };
     </script>
 </head>
 <body>

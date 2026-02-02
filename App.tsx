@@ -10,19 +10,18 @@ import { GoogleGenAI } from "@google/genai";
 
 const html = htm.bind(React.createElement);
 
-// --- Tactical Assets ---
 const GameCategory = {
   ACTION: 'Action',
   STRATEGY: 'Strategy',
   KINETIC: 'Kinetic',
-  LEGACY: 'Legacy'
+  RETRO: 'Retro'
 };
 
 const GAMES = [
   {
     id: 'slope',
     title: 'Slope',
-    description: 'High-speed 3D spatial reasoning. Navigate gravity-defying courses with sub-millisecond precision.',
+    description: 'High-speed 3D spatial reasoning challenge. Navigate gravity-defying courses with sub-millisecond precision.',
     category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=600',
     url: 'https://azgames.io/game/xlope/'
@@ -63,7 +62,7 @@ const GAMES = [
     id: 'escape-road',
     title: 'Escape Road',
     description: 'Tactical navigation module. Calibrate reflexes for high-density urban transit avoidance.',
-    category: GameCategory.KINETIC,
+    category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&q=80&w=600',
     url: 'https://genizymath.github.io/iframe/264.html'
   },
@@ -71,32 +70,24 @@ const GAMES = [
     id: 'cookie-clicker',
     title: 'Cookie Clicker',
     description: 'Infinite resource optimization. Scale production via massive algorithmic efficiency.',
-    category: GameCategory.LEGACY,
+    category: GameCategory.RETRO,
     thumbnail: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&q=80&w=600',
     url: 'https://orteil.dashnet.org/cookieclicker/'
-  },
-  {
-    id: 'blade-ball',
-    title: 'Blade Ball',
-    description: 'Defensive reflex engine. Master time-dilation and projectile deflection vectors in combat.',
-    category: GameCategory.ACTION,
-    thumbnail: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=600',
-    url: 'https://cdn.jsdelivr.net/gh/Loddypof/gitapp@581c119c1d6222694218df114c2da57271ab67e7/template/index.html'
   }
 ];
 
 const ARES_HUD = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 Tactical Online. Signal established. Query operational parameters for any module.' }]);
+  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 Online. UPLINK_ESTABLISHED. How can I assist your operations today?' }]);
   const [loading, setLoading] = useState(false);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef(null);
 
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages]);
 
-  const handleSend = async (e: React.FormEvent) => {
+  const handleSend = async (e) => {
     e.preventDefault();
     if (!input.trim() || loading) return;
     const userMsg = input.trim();
@@ -105,25 +96,24 @@ const ARES_HUD = () => {
     setLoading(true);
 
     try {
-      const apiKey = (window as any).process?.env?.API_KEY || '';
-      const ai = new GoogleGenAI({ apiKey });
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: userMsg,
         config: {
-          systemInstruction: 'You are ARES-1, tactical support AI. Use professional, military-tech tone. Provide gaming strategies and tips.'
+          systemInstruction: 'You are ARES-1, tactical support AI. Use professional, military-tech tone. Provide concise gaming tips.'
         }
       });
-      setMessages(prev => [...prev, { role: 'ai', text: response.text || 'RECEPTION_FAILURE' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: response.text || 'SIGNAL_LOST' }]);
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'ai', text: 'COMM_FAILURE: UPLINK_STALLED' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: 'LINK_FAILURE: UPLINK_TIMEOUT' }]);
     } finally {
       setLoading(false);
     }
   };
 
   return html`
-    <div className=${`fixed bottom-8 right-8 z-[100] transition-all duration-500 ${isOpen ? 'w-[320px] h-[480px]' : 'w-14 h-14'}`}>
+    <div className=${`fixed bottom-8 right-8 z-[100] transition-all duration-500 ${isOpen ? 'w-[320px] h-[450px]' : 'w-14 h-14'}`}>
       ${!isOpen ? html`
         <button onClick=${() => setIsOpen(true)} className="w-full h-full bg-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl border border-indigo-400/50 hover:scale-110 active:scale-95 transition-all">
           <${Bot} className="w-6 h-6 text-white" />
@@ -131,10 +121,10 @@ const ARES_HUD = () => {
       ` : html`
         <div className="w-full h-full glass-panel rounded-3xl overflow-hidden flex flex-col border border-indigo-500/30 shadow-2xl">
           <div className="p-4 bg-indigo-600/20 border-b border-indigo-500/10 flex items-center justify-between">
-            <span className="font-orbitron text-[10px] font-black uppercase tracking-widest text-indigo-100">ARES-1 TACTICAL</span>
+            <span className="font-orbitron text-[10px] font-black uppercase tracking-widest text-indigo-100">ARES-1 HUD</span>
             <button onClick=${() => setIsOpen(false)} className="p-1 hover:bg-white/10 rounded-lg text-slate-400"><${X} className="w-4 h-4" /></button>
           </div>
-          <div ref=${scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-950/40 font-mono text-[11px] scrollbar-hide">
+          <div ref=${scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-950/40 font-mono text-[10px] scrollbar-hide">
             ${messages.map((m, i) => html`
               <div key=${i} className=${`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                 <div className=${`max-w-[85%] p-3 rounded-2xl ${m.role === 'user' ? 'bg-indigo-600 text-white rounded-tr-none' : 'bg-slate-900 border border-white/5 text-indigo-300 rounded-tl-none'}`}>
@@ -142,10 +132,10 @@ const ARES_HUD = () => {
                 </div>
               </div>
             `)}
-            ${loading && html`<div className="text-indigo-500/30 italic animate-pulse px-2 text-[9px]">UPLINK_BUSY...</div>`}
+            ${loading && html`<div className="text-indigo-500/30 italic animate-pulse px-2 text-[9px]">UPLINKING...</div>`}
           </div>
           <form onSubmit=${handleSend} className="p-3 bg-slate-900/80 border-t border-white/5 flex gap-2">
-            <input type="text" value=${input} onInput=${(e: any) => setInput(e.target.value)} placeholder="Query..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white" />
+            <input type="text" value=${input} onInput=${(e) => setInput(e.target.value)} placeholder="Enter query..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
             <button type="submit" className="p-2 bg-indigo-600 rounded-xl text-white"><${Send} className="w-4 h-4" /></button>
           </form>
         </div>
@@ -157,15 +147,12 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v17') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v20') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_v17', cloak.toString());
+    localStorage.setItem('mh_cloak_v20', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
-    
-    const handlePanic = (e: KeyboardEvent) => { 
-      if (e.key === 'Escape') window.location.replace("https://google.com"); 
-    };
+    const handlePanic = (e) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);
     return () => window.removeEventListener('keydown', handlePanic);
   }, [cloak]);
@@ -194,7 +181,7 @@ const App = () => {
                 type="text" 
                 placeholder="Scan tactical assets..." 
                 value=${search} 
-                onInput=${(e: any) => setSearch(e.target.value)} 
+                onInput=${(e) => setSearch(e.target.value)} 
                 className="w-full bg-slate-900/60 border border-white/10 rounded-2xl py-4 pl-16 pr-8 text-sm text-white focus:outline-none focus:border-indigo-500 transition-all font-mono" 
               />
             </div>
@@ -203,7 +190,7 @@ const App = () => {
               <button 
                 onClick=${() => setCloak(!cloak)} 
                 title="Stealth Protocol" 
-                className=${`p-4 rounded-2xl border transition-all ${cloak ? 'bg-green-600/10 text-green-400 border-green-500/20' : 'bg-white/5 text-slate-500 border-white/5 hover:text-white'}`}
+                className=${`p-4 rounded-2xl border transition-all ${cloak ? 'bg-green-600/10 text-green-400 border-green-500/20 shadow-[0_0_15px_rgba(34,197,94,0.1)]' : 'bg-white/5 text-slate-500 border-white/5 hover:text-white hover:bg-white/10'}`}
               >
                 <${Ghost} className="w-6 h-6" />
               </button>
@@ -225,10 +212,11 @@ const App = () => {
             </div>
             
             <div className="glass-panel p-8 rounded-[3rem] border border-white/5 space-y-4 hidden lg:block">
-              <h4 className="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-2"><${Cpu} className="w-4 h-4" /> System Stats</h4>
+              <h4 className="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-2"><${Cpu} className="w-4 h-4" /> System Health</h4>
               <div className="space-y-3 font-mono text-[10px] text-slate-500">
-                <div className="flex justify-between"><span>Uptime</span><span className="text-indigo-400">99.98%</span></div>
-                <div className="flex justify-between"><span>Latency</span><span className="text-green-400">Stable</span></div>
+                <div className="flex justify-between border-b border-white/5 pb-2"><span>Uptime</span><span className="text-indigo-400">99.98%</span></div>
+                <div className="flex justify-between border-b border-white/5 pb-2"><span>Sync</span><span className="text-green-400">Stable</span></div>
+                <div className="flex justify-between"><span>Core</span><span className="text-indigo-600">Active</span></div>
               </div>
             </div>
           </aside>
@@ -242,6 +230,7 @@ const App = () => {
                       <div className="aspect-[16/10] relative overflow-hidden bg-slate-900">
                         <img src="${game.thumbnail}" className="w-full h-full object-cover opacity-50 grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105" />
                         <div className="absolute top-6 left-6 px-4 py-1.5 bg-black/80 rounded-full text-[9px] font-black text-indigo-400 uppercase tracking-widest border border-white/10">${game.category}</div>
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent opacity-60"></div>
                       </div>
                       <div className="p-10 space-y-4 flex-1">
                         <h3 className="font-orbitron text-xl font-bold text-white uppercase group-hover:text-indigo-400 transition-colors">${game.title}</h3>
@@ -250,7 +239,7 @@ const App = () => {
                     <//>
                   `)}
                   ${filtered.length === 0 && html`
-                    <div className="col-span-full py-40 text-center opacity-30 font-orbitron text-xs uppercase tracking-[1em]">NO_UNITS_FOUND</div>
+                    <div className="col-span-full py-40 text-center opacity-30 font-orbitron text-xs uppercase tracking-[1em]">NO_UNITS_FOUND_IN_SECTOR</div>
                   `}
                 </div>
               `} />
@@ -269,7 +258,7 @@ const GameView = ({ games }) => {
   const { pathname } = useLocation();
   const gameId = pathname.split('/').pop();
   const game = games.find(g => g.id === gameId);
-  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const iframeRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -283,7 +272,7 @@ const GameView = ({ games }) => {
         <${Link} to="/" className="inline-flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.3em] text-slate-500 hover:text-white transition-all bg-white/5 px-8 py-3 rounded-full border border-white/5">
           <${ArrowLeft} className="w-4 h-4" /> Extraction Zone
         <//>
-        <div className="text-[10px] font-bold text-slate-700 font-mono uppercase tracking-widest">SESS_ID: ${game.id}</div>
+        <div className="text-[10px] font-bold text-slate-700 font-mono uppercase tracking-widest">SESSION_ID: ${game.id.toUpperCase()}</div>
       </div>
       
       <div className="relative aspect-video w-full bg-black rounded-[4rem] overflow-hidden border border-white/10 shadow-[0_0_100px_-20px_rgba(99,102,241,0.2)] group ring-1 ring-indigo-500/10">
@@ -305,13 +294,13 @@ const GameView = ({ games }) => {
           <p className="text-slate-400 text-2xl leading-relaxed font-medium max-w-5xl">${game.description}</p>
         </div>
         <div className="glass-panel p-10 rounded-[3rem] border border-white/5 space-y-6 h-fit">
-           <div className="flex items-center gap-4 text-indigo-400 font-black text-[10px] uppercase tracking-widest"><${Shield} className="w-5 h-5" /> Status: Online</div>
+           <div className="flex items-center gap-4 text-indigo-400 font-black text-[10px] uppercase tracking-widest"><${Shield} className="w-5 h-5" /> Shield Status: ACTIVE</div>
            <div className="space-y-4 font-mono text-[11px] text-slate-500">
-              <div className="flex justify-between border-b border-white/5 pb-2"><span>Category</span><span className="text-indigo-400 uppercase">${game.category}</span></div>
-              <div className="flex justify-between border-b border-white/5 pb-2"><span>Telemetry</span><span className="text-green-400">Stable</span></div>
-              <div className="flex justify-between"><span>Latency</span><span className="text-indigo-500">2.1ms</span></div>
+              <div className="flex justify-between border-b border-white/5 pb-2"><span>Module Type</span><span className="text-indigo-400 uppercase">${game.category}</span></div>
+              <div className="flex justify-between border-b border-white/5 pb-2"><span>Telemetry</span><span className="text-green-400">NOMINAL</span></div>
+              <div className="flex justify-between"><span>Response</span><span className="text-indigo-500">OPTIMAL</span></div>
            </div>
-           <button onClick=${() => window.location.replace("https://google.com")} className="w-full py-4 bg-red-600/10 text-red-500 font-black text-[10px] uppercase tracking-widest rounded-2xl border border-red-500/20 hover:bg-red-600 hover:text-white transition-all">PANIC_EXIT (ESC)</button>
+           <button onClick=${() => window.location.replace("https://google.com")} className="w-full py-4 bg-red-600/10 text-red-500 font-black text-[10px] uppercase tracking-widest rounded-2xl border border-red-500/20 hover:bg-red-600 hover:text-white transition-all">EMERGENCY_EXIT (ESC)</button>
         </div>
       </div>
     </div>
