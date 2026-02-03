@@ -16,7 +16,7 @@
             align-items: center !important;
             justify-content: center !important;
             background: #020617 !important;
-            z-index: 2147483647 !important; /* Max z-index */
+            z-index: 2147483647 !important;
             flex-direction: column !important;
             gap: 2rem !important;
             pointer-events: all !important;
@@ -58,17 +58,17 @@
         .bypass-btn:active { transform: scale(0.95) !important; }
     </style>
     <script>
-        // EMERGENCY BOOTSTRAP
+        // EMERGENCY BOOTSTRAP - Runs before any modules
         window.process = { env: { API_KEY: "" } };
         
-        // This function is guaranteed to exist immediately
+        // This function is defined in global scope immediately
         window.dismissLoader = function() {
-            console.log("BYPASS_TRIGGERED: Forcing reveal.");
+            console.log("RECOVERY: Forcing loader removal.");
             var loader = document.getElementById('emergency-loader');
             if (loader) {
                 loader.style.opacity = '0';
                 setTimeout(function() {
-                    if (loader.parentNode) loader.parentNode.removeChild(loader);
+                    if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
                 }, 500);
             }
             document.body.style.overflow = 'auto';
@@ -76,13 +76,13 @@
             document.body.style.width = 'auto';
         };
 
-        // Watchdog: Reveal site after 4 seconds regardless of script status
+        // Watchdog: Automatic reveal after 3.5 seconds
         setTimeout(function() {
             if (document.getElementById('emergency-loader')) {
-                console.warn("Watchdog: System hang detected. Forcing UI reveal.");
+                console.warn("Watchdog: Module hang detected. Forcing reveal.");
                 window.dismissLoader();
             }
-        }, 4000);
+        }, 3500);
     </script>
     <script type="importmap">
 {
@@ -102,9 +102,9 @@
 <body>
     <div id="emergency-loader">
         <div class="loader-ring"></div>
-        <div class="font-orbitron" style="font-size: 11px; color: #6366f1; letter-spacing: 6px; font-weight: 900; text-align: center;">BOOT_V16_STABLE</div>
+        <div class="font-orbitron" style="font-size: 11px; color: #6366f1; letter-spacing: 6px; font-weight: 900; text-align: center;">BOOT_V17_RECOVERY</div>
         <button class="bypass-btn" onclick="window.dismissLoader()">Force Launch Engine</button>
-        <p style="font-size: 9px; color: #475569; font-family: 'JetBrains Mono'; opacity: 0.5; text-align: center; max-width: 220px; line-height: 1.6;">IF LOADING HANGS, USE THE MANUAL OVERRIDE BUTTON ABOVE</p>
+        <p style="font-size: 9px; color: #475569; font-family: 'JetBrains Mono'; opacity: 0.5; text-align: center; max-width: 220px; line-height: 1.6;">GITHUB PAGES STABILIZATION ACTIVE</p>
     </div>
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>

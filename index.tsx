@@ -5,7 +5,7 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-const mountApp = () => {
+const startEngine = () => {
   const container = document.getElementById('root');
   if (!container) return;
 
@@ -19,19 +19,20 @@ const mountApp = () => {
       `
     );
     
-    // Attempt to dismiss loader once React starts its cycle
+    // Auto-dismiss the loader once React kicks in
     setTimeout(() => {
       if (typeof (window as any).dismissLoader === 'function') {
         (window as any).dismissLoader();
       }
-    }, 400);
+    }, 500);
   } catch (err) {
-    console.error("Mount Failure:", err);
+    console.error("Critical Engine Failure:", err);
   }
 };
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', mountApp);
+// Handle both direct and deferred load
+if (document.readyState === 'complete') {
+  startEngine();
 } else {
-  mountApp();
+  window.addEventListener('load', startEngine);
 }
