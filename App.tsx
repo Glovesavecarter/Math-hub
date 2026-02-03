@@ -96,6 +96,8 @@ const ARES_HUD = () => {
 
     try {
       const apiKey = (window as any).process?.env?.API_KEY || '';
+      if (!apiKey) throw new Error("Missing Uplink Key");
+      
       const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
@@ -106,7 +108,7 @@ const ARES_HUD = () => {
       });
       setMessages(prev => [...prev, { role: 'ai', text: response.text || 'Uplink failure.' }]);
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'ai', text: 'Critical Error: Connection lost.' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: 'Connection to ARES-1 restricted. Enable API keys in environment.' }]);
     } finally {
       setLoading(false);
     }
@@ -115,7 +117,7 @@ const ARES_HUD = () => {
   return html`
     <div className=${`fixed bottom-8 right-8 z-[100] transition-all duration-500 ${isOpen ? 'w-[320px] h-[450px]' : 'w-14 h-14'}`}>
       ${!isOpen ? html`
-        <button onClick=${() => setIsOpen(true)} className="w-full h-full bg-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl border border-indigo-400/50 hover:scale-110 transition-all">
+        <button onClick=${() => setIsOpen(true)} className="w-full h-full bg-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl border border-indigo-400/50 hover:scale-110 active:scale-95 transition-all">
           <${Bot} className="w-6 h-6 text-white" />
         </button>
       ` : html`
@@ -132,7 +134,7 @@ const ARES_HUD = () => {
                 </div>
               </div>
             `)}
-            ${loading && html`<div className="text-indigo-500 animate-pulse text-[8px]">ANALYZING...</div>`}
+            ${loading && html`<div className="text-indigo-500 animate-pulse text-[8px] pl-2 font-black uppercase">Analyzing...</div>`}
           </div>
           <form onSubmit=${handleSend} className="p-3 bg-slate-900/80 border-t border-white/5 flex gap-2">
             <input type="text" value=${input} onInput=${(e: any) => setInput(e.target.value)} placeholder="Query ARES..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
@@ -147,10 +149,10 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v28') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v29') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_v28', cloak.toString());
+    localStorage.setItem('mh_cloak_v29', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
     const handlePanic = (e: KeyboardEvent) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);
@@ -201,7 +203,7 @@ const App = () => {
               <p className="px-6 text-[10px] font-black uppercase tracking-[0.4em] text-slate-600">Categories</p>
               <nav className="flex lg:flex-col gap-1.5 overflow-x-auto pb-4 lg:pb-0 scrollbar-hide">
                 ${['all', ...Object.values(GameCategory)].map(c => html`
-                  <button key=${c} onClick=${() => setCategory(c)} className=${`px-4 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all ${category === c ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'}`}>
+                  <button key=${c} onClick=${() => setCategory(c)} className=${`px-4 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${category === c ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'}`}>
                     ${c === 'all' ? 'All Units' : c}
                   </button>
                 `)}
@@ -281,7 +283,7 @@ const GameView = ({ games }: { games: any[] }) => {
         </div>
         <div className="bg-slate-900 p-10 rounded-[2.5rem] border border-white/5 space-y-6 h-fit">
            <div className="flex items-center gap-4 text-indigo-400 font-black text-[10px] uppercase tracking-widest"><${Shield} className="w-5 h-5" /> Protocol: ACTIVE</div>
-           <button onClick=${() => window.location.replace("https://google.com")} className="w-full py-5 bg-red-600/10 text-red-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl border border-red-500/20 hover:bg-red-600 hover:text-white transition-all">PANIC (ESC)</button>
+           <button onClick=${() => window.location.replace("https://google.com")} className="w-full py-5 bg-red-600/10 text-red-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl border border-red-500/20 hover:bg-red-600 hover:text-white transition-all uppercase">PANIC (ESC)</button>
         </div>
       </div>
     </div>
