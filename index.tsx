@@ -5,7 +5,8 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-const startEngine = () => {
+const boot = () => {
+  console.log("Kernel: Initializing Tactical Command Hub...");
   const container = document.getElementById('root');
   if (!container) return;
 
@@ -19,20 +20,30 @@ const startEngine = () => {
       `
     );
     
-    // Auto-dismiss the loader once React kicks in
-    setTimeout(() => {
+    // Handshake: Let the loader know React has taken control
+    const triggerDismissal = () => {
       if (typeof (window as any).dismissLoader === 'function') {
         (window as any).dismissLoader();
       }
-    }, 500);
+    };
+
+    // Fast reveal once mounting begins
+    requestAnimationFrame(() => {
+        setTimeout(triggerDismissal, 400);
+    });
+    
   } catch (err) {
-    console.error("Critical Engine Failure:", err);
+    console.error("Mounting Failure:", err);
+    // Even if React fails, we show the screen so the user sees the 404/Error UI
+    if (typeof (window as any).dismissLoader === 'function') {
+        (window as any).dismissLoader();
+    }
   }
 };
 
-// Handle both direct and deferred load
-if (document.readyState === 'complete') {
-  startEngine();
+// Start as soon as possible
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', boot);
 } else {
-  window.addEventListener('load', startEngine);
+  boot();
 }
