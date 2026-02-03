@@ -2,15 +2,14 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
   Search, Sigma, Target, Zap, Play, ArrowLeft, Maximize, 
-  Bot, Send, Cpu, Settings, Ghost, X, Shield, Info, 
-  Flame, Trophy, Clock, LayoutGrid, Terminal, ChevronRight
+  Bot, Send, Cpu, Ghost, X, Shield, Terminal
 } from 'lucide-react';
 import htm from 'htm';
 import { GoogleGenAI } from "@google/genai";
 
 const html = htm.bind(React.createElement);
 
-// --- Tactical Constants ---
+// --- Module Registry ---
 const GameCategory = {
   ACTION: 'Action',
   STRATEGY: 'Strategy',
@@ -22,7 +21,7 @@ const GAMES = [
   {
     id: 'slope',
     title: 'Slope',
-    description: 'High-speed 3D spatial reasoning challenge. Navigate gravity-defying courses with extreme precision.',
+    description: 'High-speed 3D spatial reasoning challenge. Navigate gravity-defying courses.',
     category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=600',
     url: 'https://azgames.io/game/xlope/'
@@ -30,7 +29,7 @@ const GAMES = [
   {
     id: 'clusterrush',
     title: 'Cluster Rush',
-    description: 'Kinetic platforming module. Master momentum across shifting sectors and obstacle clusters.',
+    description: 'Kinetic platforming module. Master momentum across shifting logic sectors.',
     category: GameCategory.KINETIC,
     thumbnail: 'https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&q=80&w=600',
     url: 'https://genizymath.github.io/iframe/81.html'
@@ -38,7 +37,7 @@ const GAMES = [
   {
     id: 'bad-parenting-1',
     title: 'Bad Parenting 1',
-    description: 'Psychological survival strategy. Analyze environmental cues and complex household dynamics.',
+    description: 'Psychological survival strategy. Analyze environmental cues and npc logic.',
     category: GameCategory.STRATEGY,
     thumbnail: 'https://images.unsplash.com/photo-1505632958218-4f23394784a6?auto=format&fit=crop&q=80&w=600',
     url: 'https://genizymath.github.io/iframe/166.html'
@@ -46,7 +45,7 @@ const GAMES = [
   {
     id: 'kindergarten',
     title: 'Kindergarten',
-    description: 'High-stakes social interaction simulator. Navigate school-yard diplomacy in a tactical environment.',
+    description: 'High-stakes social interaction simulator. Navigate school-yard diplomacy.',
     category: GameCategory.STRATEGY,
     thumbnail: 'https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=600',
     url: 'https://genizymath.github.io/iframe/445.html'
@@ -54,7 +53,7 @@ const GAMES = [
   {
     id: 'kindergarten-2',
     title: 'Kindergarten 2',
-    description: 'Advanced tactical social simulator. Complex NPC logic and expanded exploration sectors.',
+    description: 'Advanced tactical social simulator. Complex NPC logic and expanded sectors.',
     category: GameCategory.STRATEGY,
     thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&q=80&w=600',
     url: 'https://genizymath.github.io/iframe/446.html'
@@ -62,7 +61,7 @@ const GAMES = [
   {
     id: 'escape-road',
     title: 'Escape Road',
-    description: 'Tactical navigation module. Calibrate reflexes for high-density urban transit avoidance.',
+    description: 'Tactical navigation module. Calibrate reflexes for high-density transit avoidance.',
     category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&q=80&w=600',
     url: 'https://genizymath.github.io/iframe/264.html'
@@ -70,14 +69,13 @@ const GAMES = [
   {
     id: 'cookie-clicker',
     title: 'Cookie Clicker',
-    description: 'Infinite resource optimization. Scale production via massive algorithmic efficiency.',
+    description: 'Infinite resource optimization. Scale production via massive efficiency.',
     category: GameCategory.RETRO,
     thumbnail: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&q=80&w=600',
     url: 'https://orteil.dashnet.org/cookieclicker/'
   }
 ];
 
-// --- Tactical HUD (AI Helper) ---
 const ARES_HUD = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
@@ -98,18 +96,17 @@ const ARES_HUD = () => {
     setLoading(true);
 
     try {
-      const apiKey = process.env.API_KEY;
-      const ai = new GoogleGenAI({ apiKey });
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: userMsg,
         config: {
-          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. Provide brief, professional, tech-focused gaming advice.'
+          systemInstruction: 'You are ARES-1, tactical assistant for Math Hub unblocked games. Tone: Professional, cybernetic, helpful. Give short pro tips.'
         }
       });
       setMessages(prev => [...prev, { role: 'ai', text: response.text || 'SIGNAL_LOST' }]);
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'ai', text: 'CONNECTION_TIMEOUT' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: 'LINK_FAILURE: RETRY' }]);
     } finally {
       setLoading(false);
     }
@@ -118,13 +115,13 @@ const ARES_HUD = () => {
   return html`
     <div className=${`fixed bottom-8 right-8 z-[100] transition-all duration-500 ${isOpen ? 'w-[320px] h-[450px]' : 'w-14 h-14'}`}>
       ${!isOpen ? html`
-        <button onClick=${() => setIsOpen(true)} className="w-full h-full bg-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl border border-indigo-400/50 hover:scale-110 active:scale-95 transition-all group">
-          <${Bot} className="w-6 h-6 text-white group-hover:rotate-12 transition-transform" />
+        <button onClick=${() => setIsOpen(true)} className="w-full h-full bg-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl border border-indigo-400/50 hover:scale-110 active:scale-95 transition-all">
+          <${Bot} className="w-6 h-6 text-white" />
         </button>
       ` : html`
         <div className="w-full h-full glass-panel rounded-3xl overflow-hidden flex flex-col border border-indigo-500/30 shadow-2xl">
           <div className="p-4 bg-indigo-600/20 border-b border-indigo-500/10 flex items-center justify-between">
-            <span className="font-orbitron text-[10px] font-black uppercase tracking-widest text-indigo-100">ARES-1 TACTICAL HUD</span>
+            <span className="font-orbitron text-[10px] font-black uppercase tracking-widest text-indigo-100">ARES-1 HUD</span>
             <button onClick=${() => setIsOpen(false)} className="p-1 hover:bg-white/10 rounded-lg text-slate-400"><${X} className="w-4 h-4" /></button>
           </div>
           <div ref=${scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-950/40 font-mono text-[10px] scrollbar-hide">
@@ -138,7 +135,7 @@ const ARES_HUD = () => {
             ${loading && html`<div className="text-indigo-500/30 italic animate-pulse px-2 text-[9px]">UPLINKING...</div>`}
           </div>
           <form onSubmit=${handleSend} className="p-3 bg-slate-900/80 border-t border-white/5 flex gap-2">
-            <input type="text" value=${input} onInput=${(e) => setInput(e.target.value)} placeholder="Query..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
+            <input type="text" value=${input} onInput=${(e) => setInput(e.target.value)} placeholder="Query protocol..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
             <button type="submit" className="p-2 bg-indigo-600 rounded-xl text-white"><${Send} className="w-4 h-4" /></button>
           </form>
         </div>
@@ -150,10 +147,10 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_final') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v4') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_final', cloak.toString());
+    localStorage.setItem('mh_cloak_v4', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
     const handlePanic = (e) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);
@@ -174,7 +171,7 @@ const App = () => {
         <nav className="sticky top-0 z-50 glass-panel border-b border-white/10 px-8 py-5">
           <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-12">
             <${Link} to="/" className="flex items-center gap-4 shrink-0 group">
-              <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-600/20 transition-transform group-hover:scale-110"><${Sigma} className="w-6 h-6 text-white" /></div>
+              <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg transition-transform group-hover:scale-110"><${Sigma} className="w-6 h-6 text-white" /></div>
               <span className="font-orbitron text-2xl font-black text-white uppercase hidden sm:block tracking-tighter">MATH HUB</span>
             <//>
             
@@ -182,32 +179,30 @@ const App = () => {
               <${Search} className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
               <input 
                 type="text" 
-                placeholder="Scan tactical assets..." 
+                placeholder="Scan tactical modules..." 
                 value=${search} 
                 onInput=${(e) => setSearch(e.target.value)} 
                 className="w-full bg-slate-900/60 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono transition-all" 
               />
             </div>
             
-            <div className="flex items-center gap-4">
-              <button 
-                onClick=${() => setCloak(!cloak)} 
-                title="Stealth Protocol"
-                className=${`p-3.5 rounded-xl border transition-all ${cloak ? 'bg-green-600/10 text-green-400 border-green-500/20 shadow-[0_0_15px_rgba(34,197,94,0.1)]' : 'bg-white/5 text-slate-500 border-white/5 hover:text-white'}`}
-              >
-                <${Ghost} className="w-6 h-6" />
-              </button>
-            </div>
+            <button 
+              onClick=${() => setCloak(!cloak)} 
+              title="Stealth Protocol"
+              className=${`p-3.5 rounded-xl border transition-all ${cloak ? 'bg-green-600/10 text-green-400 border-green-500/20 shadow-lg' : 'bg-white/5 text-slate-500 border-white/5 hover:text-white'}`}
+            >
+              <${Ghost} className="w-6 h-6" />
+            </button>
           </div>
         </nav>
 
         <main className="flex-1 max-w-[1600px] mx-auto w-full px-8 py-12 flex flex-col lg:flex-row gap-16">
           <aside className="w-full lg:w-72 space-y-10 shrink-0">
             <div className="space-y-4">
-              <p className="px-6 text-[10px] font-black uppercase tracking-[0.4em] text-slate-600">Unit Type</p>
+              <p className="px-6 text-[10px] font-black uppercase tracking-[0.4em] text-slate-600">Categories</p>
               <nav className="flex lg:flex-col gap-1.5 overflow-x-auto pb-4 lg:pb-0 scrollbar-hide">
                 ${['all', ...Object.values(GameCategory)].map(c => html`
-                  <button key=${c} onClick=${() => setCategory(c)} className=${`px-8 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${category === c ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'}`}>
+                  <button key=${c} onClick=${() => setCategory(c)} className=${`px-8 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${category === c ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'}`}>
                     ${c === 'all' ? 'All Units' : c}
                   </button>
                 `)}
@@ -217,8 +212,8 @@ const App = () => {
             <div className="glass-panel p-8 rounded-[2rem] border border-white/5 space-y-4 hidden lg:block opacity-60">
               <h4 className="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-2"><${Cpu} className="w-4 h-4" /> Telemetry</h4>
               <div className="space-y-2 font-mono text-[9px] text-slate-500">
-                <div className="flex justify-between"><span>Core Frequency</span><span className="text-indigo-400">NOMINAL</span></div>
-                <div className="flex justify-between"><span>Node Latency</span><span className="text-green-400">14ms</span></div>
+                <div className="flex justify-between"><span>Latency</span><span className="text-green-400">12ms</span></div>
+                <div className="flex justify-between"><span>Status</span><span className="text-indigo-400">Stable</span></div>
               </div>
             </div>
           </aside>
@@ -263,15 +258,15 @@ const GameView = ({ games }) => {
 
   useEffect(() => { window.scrollTo(0, 0); }, [gameId]);
 
-  if (!game) return html`<div className="py-40 text-center font-orbitron opacity-40 uppercase tracking-[1em]">SYSTEM_ERROR: VOID</div>`;
+  if (!game) return html`<div className="py-40 text-center font-orbitron opacity-40 uppercase tracking-[1em]">ERROR: VOID</div>`;
 
   return html`
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-32">
       <div className="flex items-center justify-between">
         <${Link} to="/" className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-white transition-all bg-white/5 px-8 py-3 rounded-full border border-white/5">
-          <${ArrowLeft} className="w-4 h-4" /> Extraction
+          <${ArrowLeft} className="w-4 h-4" /> Exit Session
         <//>
-        <div className="text-[10px] font-bold text-slate-700 font-mono uppercase tracking-widest">SESSION_ID: ${game.id.toUpperCase()}</div>
+        <div className="text-[10px] font-bold text-slate-700 font-mono uppercase tracking-widest">ID: ${game.id.toUpperCase()}</div>
       </div>
       
       <div className="relative aspect-video w-full bg-black rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl group ring-1 ring-indigo-500/10">
@@ -293,7 +288,7 @@ const GameView = ({ games }) => {
           <p className="text-slate-400 text-xl leading-relaxed font-medium opacity-80">${game.description}</p>
         </div>
         <div className="glass-panel p-10 rounded-[2.5rem] border border-white/5 space-y-6 h-fit">
-           <div className="flex items-center gap-4 text-indigo-400 font-black text-[10px] uppercase tracking-widest"><${Shield} className="w-5 h-5" /> Shield: ACTIVE</div>
+           <div className="flex items-center gap-4 text-indigo-400 font-black text-[10px] uppercase tracking-widest"><${Shield} className="w-5 h-5" /> Protocol: ACTIVE</div>
            <button onClick=${() => window.location.replace("https://google.com")} className="w-full py-5 bg-red-600/10 text-red-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl border border-red-500/20 hover:bg-red-600 hover:text-white transition-all">PANIC (ESC)</button>
         </div>
       </div>

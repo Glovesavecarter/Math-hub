@@ -5,7 +5,7 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-// CRITICAL: Initialize process.env polyfill BEFORE any other execution
+// Ensure process.env is available for the Gemini SDK
 if (typeof window['process'] === 'undefined') {
   window['process'] = { 
     env: { 
@@ -28,16 +28,14 @@ const mount = () => {
       `
     );
     
-    // Dismiss the loading overlay after the initial render is queued
+    // Signal to hide the loading overlay
     if (window['dismissLoader']) {
       setTimeout(() => window['dismissLoader'](), 300);
     }
   } catch (err) {
-    console.error("Critical System Failure during Mount:", err);
-    // Even if it fails, try to show whatever rendered or at least hide the loader
+    console.error("Critical: Render Failure", err);
     if (window['dismissLoader']) window['dismissLoader']();
   }
 };
 
-// Execute boot protocol
 mount();
