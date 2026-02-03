@@ -5,11 +5,14 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-console.log("Kernel: Initializing Tactical Engine V12...");
+console.log("Kernel: Initializing Tactical Engine V13 (Strict Mode)...");
 
 const start = () => {
   const rootElement = document.getElementById('root');
-  if (!rootElement) return;
+  if (!rootElement) {
+    console.error("FATAL: Root element missing from DOM.");
+    return;
+  }
 
   try {
     const root = ReactDOM.createRoot(rootElement);
@@ -21,19 +24,20 @@ const start = () => {
       `
     );
     
-    // Attempt to dismiss loader as soon as React has processed the tree
-    // We use a small buffer to ensure the first paint of the UI is ready
+    // Auto-dismiss the loader after React has had a chance to mount
+    // Using a slightly longer delay to ensure the DOM is ready for interaction
     setTimeout(() => {
-        if (typeof window['dismissLoader'] === 'function') {
-            window['dismissLoader']();
+        if (typeof (window as any).dismissLoader === 'function') {
+            (window as any).dismissLoader();
         }
-    }, 400);
+    }, 600);
   } catch (err) {
     console.error("KERNEL_PANIC: React mounting failed", err);
+    // If we crash here, the user can still use the "Force Launch" button
   }
 };
 
-// Fire boot sequence
+// Fire boot sequence when ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', start);
 } else {

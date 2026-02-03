@@ -11,17 +11,17 @@
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
         
         #emergency-loader {
-            position: fixed;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #020617;
-            z-index: 9999999; /* Ultra high priority */
-            flex-direction: column;
-            gap: 1.5rem;
+            position: fixed !important;
+            inset: 0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            background: #020617 !important;
+            z-index: 99999999 !important; /* Maximum possible z-index */
+            flex-direction: column !important;
+            gap: 1.5rem !important;
             opacity: 1;
-            transition: opacity 0.5s ease;
+            pointer-events: all !important;
         }
         
         .loader-ring {
@@ -36,43 +36,57 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .bypass-btn {
-            padding: 16px 32px;
-            background: #6366f1;
-            border: 2px solid rgba(255,255,255,0.2);
-            border-radius: 14px;
-            color: white;
-            font-size: 11px;
-            cursor: pointer;
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-weight: 900;
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
-            transition: all 0.2s;
-            pointer-events: auto !important; /* Ensure it stays clickable */
+            padding: 16px 32px !important;
+            background: #6366f1 !important;
+            border: 2px solid rgba(255,255,255,0.3) !important;
+            border-radius: 14px !important;
+            color: white !important;
+            font-size: 11px !important;
+            cursor: pointer !important;
+            font-family: 'Orbitron', sans-serif !important;
+            text-transform: uppercase !important;
+            letter-spacing: 3px !important;
+            font-weight: 900 !important;
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5) !important;
+            transition: all 0.2s !important;
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
         }
         
-        .bypass-btn:hover { background: #4f46e5; transform: scale(1.05); }
-        .bypass-btn:active { transform: scale(0.95); }
+        .bypass-btn:hover { background: #4f46e5 !important; transform: scale(1.05) !important; }
+        .bypass-btn:active { transform: scale(0.95) !important; }
     </style>
     <script>
-        // CRITICAL INITIALIZATION
+        // CRITICAL INITIALIZATION: Set environment immediately
         window.process = { env: { API_KEY: "" } };
         
         window.dismissLoader = function() {
-            console.log("KERNEL: Manually dismissing loader...");
+            console.log("KERNEL: NUCLEAR BYPASS TRIGGERED.");
             var loader = document.getElementById('emergency-loader');
             if (loader) {
-                loader.style.display = 'none';
-                if (loader.parentNode) loader.parentNode.removeChild(loader);
+                loader.style.setProperty('display', 'none', 'important');
+                if (loader.parentNode) {
+                    loader.parentNode.removeChild(loader);
+                }
             }
+            // Ensure body can scroll if needed (though app is overflow-hidden)
+            document.body.style.overflow = 'auto';
         };
 
-        // If the module fails to load or takes too long, we reveal the body after 12s anyway
-        window.addEventListener('error', function(e) {
-            console.error("FATAL_MODULE_ERROR:", e.message);
-            // Optionally auto-dismiss if a script fails
-        });
+        // Fallback: If modules fail to load within 8 seconds, attempt auto-bypass
+        setTimeout(function() {
+            if (document.getElementById('emergency-loader')) {
+                console.warn("System watchdog triggered: auto-bypassing loader.");
+                window.dismissLoader();
+            }
+        }, 8000);
+
+        // Global Error Watchdog
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            console.error("GLOBAL_PANIC:", msg, "at", url, ":", lineNo);
+            return false;
+        };
     </script>
     <script type="importmap">
 {
@@ -92,12 +106,11 @@
 <body>
     <div id="emergency-loader">
         <div class="loader-ring"></div>
-        <div class="font-orbitron" style="font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900;">BOOT_SEQUENCE_V12</div>
-        <button class="bypass-btn" onclick="window.dismissLoader()">Force Launch Engine</button>
-        <p style="font-size: 10px; color: #475569; font-family: 'JetBrains Mono'; margin-top: 10px; opacity: 0.6; text-align: center;">(MANUAL BYPASS FOR NETWORK CONGESTION)</p>
+        <div class="font-orbitron" style="font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900;">STABLE_BOOT_V13</div>
+        <button class="bypass-btn" id="bypass-trigger" onclick="window.dismissLoader()">Force Launch Engine</button>
+        <p style="font-size: 10px; color: #475569; font-family: 'JetBrains Mono'; margin-top: 10px; opacity: 0.6; text-align: center;">(PHYSICAL REMOVAL BYPASS)</p>
     </div>
     <div id="root"></div>
-    <!-- Note: ensure pathing is correct for your environment -->
     <script type="module" src="./index.tsx"></script>
 </body>
 </html>
