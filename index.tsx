@@ -5,9 +5,9 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-console.log("Kernel Init: STABLE_V11");
+console.log("Kernel: Initializing Tactical Engine V12...");
 
-const mount = () => {
+const start = () => {
   const rootElement = document.getElementById('root');
   if (!rootElement) return;
 
@@ -21,22 +21,21 @@ const mount = () => {
       `
     );
     
-    // Auto-dismiss the loader after a short delay to allow React to paint the first frame
+    // Attempt to dismiss loader as soon as React has processed the tree
+    // We use a small buffer to ensure the first paint of the UI is ready
     setTimeout(() => {
         if (typeof window['dismissLoader'] === 'function') {
             window['dismissLoader']();
         }
-    }, 500);
+    }, 400);
   } catch (err) {
-    console.error("Critical Kernel Error during mount:", err);
-    // If mount fails, we don't clear the loader automatically to prevent showing a broken UI
-    // but the manual Force Launch button in index.html is still available.
+    console.error("KERNEL_PANIC: React mounting failed", err);
   }
 };
 
-// Handle boot sequence
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-  mount();
+// Fire boot sequence
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', start);
 } else {
-  document.addEventListener('DOMContentLoaded', mount);
+    start();
 }
