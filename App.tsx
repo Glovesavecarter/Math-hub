@@ -78,7 +78,7 @@ const GAMES = [
 const ARES_HUD = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 Operational. Strategic link ready.' }]);
+  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 Tactical Link established.' }]);
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
 
@@ -100,12 +100,12 @@ const ARES_HUD = () => {
         model: 'gemini-3-flash-preview',
         contents: userMsg,
         config: {
-          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. Be brief, cybernetic, and helpful.'
+          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. Tone: Brief, cybernetic, helpful.'
         }
       });
       setMessages(prev => [...prev, { role: 'ai', text: response.text || 'SIGNAL_LOST' }]);
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'ai', text: 'UPLINK_FAILURE' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: 'LINK_FAILURE: RETRY' }]);
     } finally {
       setLoading(false);
     }
@@ -145,10 +145,10 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v10') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v11') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_v10', cloak.toString());
+    localStorage.setItem('mh_cloak_v11', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
     const handlePanic = (e: KeyboardEvent) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);
@@ -208,7 +208,7 @@ const App = () => {
             <div className="p-8 rounded-[2rem] border border-white/5 space-y-4 hidden lg:block opacity-60">
               <h4 className="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-2"><${Cpu} className="w-4 h-4" /> Telemetry</h4>
               <div className="space-y-2 font-mono text-[9px] text-slate-500">
-                <div className="flex justify-between"><span>Kernel</span><span className="text-green-400">V10_STABLE</span></div>
+                <div className="flex justify-between"><span>Kernel</span><span className="text-green-400">V11_STABLE</span></div>
                 <div className="flex justify-between"><span>Status</span><span className="text-indigo-400">Online</span></div>
               </div>
             </div>

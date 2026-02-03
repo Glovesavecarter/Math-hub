@@ -5,7 +5,7 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-console.log("Booting Kernel V10...");
+console.log("Kernel Init: STABLE_V11");
 
 const mount = () => {
   const rootElement = document.getElementById('root');
@@ -21,17 +21,20 @@ const mount = () => {
       `
     );
     
-    // Auto-dismiss the loader after React successfully renders
-    if (typeof window['dismissLoader'] === 'function') {
-      setTimeout(() => window['dismissLoader'](), 300);
-    }
+    // Auto-dismiss the loader after a short delay to allow React to paint the first frame
+    setTimeout(() => {
+        if (typeof window['dismissLoader'] === 'function') {
+            window['dismissLoader']();
+        }
+    }, 500);
   } catch (err) {
-    console.error("BOOT_EXCEPTION:", err);
-    // If we crash, the button in HTML still allows manual bypass
+    console.error("Critical Kernel Error during mount:", err);
+    // If mount fails, we don't clear the loader automatically to prevent showing a broken UI
+    // but the manual Force Launch button in index.html is still available.
   }
 };
 
-// Fire boot sequence immediately if DOM is ready
+// Handle boot sequence
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
   mount();
 } else {
