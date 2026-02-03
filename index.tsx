@@ -5,19 +5,11 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-// Sync local environment
-if (window['_env_'] && window['process']) {
-  window['process'].env.API_KEY = window['_env_'].API_KEY || '';
-}
-
-console.log("Kernel: V7_RECOVERY_PROTOCOL_READY");
+console.log("System Initializing: Command V8 (React 18 Stable)");
 
 const mount = () => {
   const rootElement = document.getElementById('root');
-  if (!rootElement) {
-    console.error("DOM_ERROR: Root not found");
-    return;
-  }
+  if (!rootElement) return;
 
   try {
     const root = ReactDOM.createRoot(rootElement);
@@ -29,17 +21,16 @@ const mount = () => {
       `
     );
     
-    // Auto-dismiss the loader overlay on successful render
-    if (window['dismissLoader']) {
-      setTimeout(() => window['dismissLoader'](), 300);
-    }
+    // Auto-dismiss the loader after React takes over
+    setTimeout(() => {
+        if (window['dismissLoader']) window['dismissLoader']();
+    }, 500);
   } catch (err) {
-    console.error("BOOT_EXCEPTION:", err);
+    console.error("Critical Render Failure:", err);
     if (window['dismissLoader']) window['dismissLoader']();
   }
 };
 
-// Fire boot sequence
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
   mount();
 } else {

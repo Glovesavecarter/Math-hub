@@ -78,7 +78,7 @@ const GAMES = [
 const ARES_HUD = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 Tactical Link established. System monitoring active.' }]);
+  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 Tactical Link established.' }]);
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
 
@@ -95,18 +95,17 @@ const ARES_HUD = () => {
     setLoading(true);
 
     try {
-      // FIX: Always use process.env.API_KEY directly as required by Google GenAI SDK guidelines
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: userMsg,
         config: {
-          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. Tone: Brief, cybernetic, helpful. Help with unblocked games.'
+          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. Tone: Brief, cybernetic, helpful.'
         }
       });
       setMessages(prev => [...prev, { role: 'ai', text: response.text || 'SIGNAL_LOST' }]);
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'ai', text: 'LINK_FAILURE: RETRY_UPLINK' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: 'LINK_FAILURE: RETRY' }]);
     } finally {
       setLoading(false);
     }
@@ -119,20 +118,19 @@ const ARES_HUD = () => {
           <${Bot} className="w-6 h-6 text-white" />
         </button>
       ` : html`
-        <div className="w-full h-full glass-panel rounded-3xl overflow-hidden flex flex-col border border-indigo-500/30 shadow-2xl">
+        <div className="w-full h-full glass-panel rounded-3xl overflow-hidden flex flex-col border border-indigo-500/30 shadow-2xl bg-slate-900">
           <div className="p-4 bg-indigo-600/20 border-b border-indigo-500/10 flex items-center justify-between">
             <span className="font-orbitron text-[10px] font-black uppercase tracking-widest text-indigo-100">ARES-1 HUD</span>
             <button onClick=${() => setIsOpen(false)} className="p-1 hover:bg-white/10 rounded-lg text-slate-400"><${X} className="w-4 h-4" /></button>
           </div>
-          <div ref=${scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-950/40 font-mono text-[10px] scrollbar-hide">
+          <div ref=${scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-950/40 font-mono text-[10px]">
             ${messages.map((m, i) => html`
               <div key=${i} className=${`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className=${`max-w-[85%] p-3 rounded-2xl ${m.role === 'user' ? 'bg-indigo-600 text-white rounded-tr-none' : 'bg-slate-900 border border-white/5 text-indigo-300 rounded-tl-none'}`}>
+                <div className=${`max-w-[85%] p-3 rounded-2xl ${m.role === 'user' ? 'bg-indigo-600 text-white' : 'bg-slate-900 border border-white/5 text-indigo-300'}`}>
                   ${m.text}
                 </div>
               </div>
             `)}
-            ${loading && html`<div className="text-indigo-500/30 italic animate-pulse px-2 text-[9px]">UPLINKING...</div>`}
           </div>
           <form onSubmit=${handleSend} className="p-3 bg-slate-900/80 border-t border-white/5 flex gap-2">
             <input type="text" value=${input} onInput=${(e) => setInput(e.target.value)} placeholder="Query protocol..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
@@ -147,10 +145,10 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v7') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v8') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_v7', cloak.toString());
+    localStorage.setItem('mh_cloak_v8', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
     const handlePanic = (e) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);
@@ -167,12 +165,12 @@ const App = () => {
 
   return html`
     <${Router}>
-      <div className="min-h-screen bg-[#020617] text-slate-200 flex flex-col font-inter selection:bg-indigo-600/40">
-        <nav className="sticky top-0 z-50 glass-panel border-b border-white/10 px-8 py-5">
+      <div className="min-h-screen bg-[#020617] text-slate-200 flex flex-col font-inter">
+        <nav className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-white/10 px-8 py-5">
           <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-12">
             <${Link} to="/" className="flex items-center gap-4 shrink-0 group">
-              <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg transition-transform group-hover:scale-110"><${Sigma} className="w-6 h-6 text-white" /></div>
-              <span className="font-orbitron text-2xl font-black text-white uppercase hidden sm:block tracking-tighter">MATH HUB</span>
+              <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg group-hover:scale-110 transition-transform"><${Sigma} className="w-6 h-6 text-white" /></div>
+              <span className="font-orbitron text-2xl font-black text-white uppercase hidden sm:block">MATH HUB</span>
             <//>
             
             <div className="flex-1 max-w-xl relative">
@@ -182,7 +180,7 @@ const App = () => {
                 placeholder="Scan tactical modules..." 
                 value=${search} 
                 onInput=${(e) => setSearch(e.target.value)} 
-                className="w-full bg-slate-900/60 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono transition-all" 
+                className="w-full bg-slate-900 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono transition-all" 
               />
             </div>
             
@@ -200,20 +198,13 @@ const App = () => {
           <aside className="w-full lg:w-72 space-y-10 shrink-0">
             <div className="space-y-4">
               <p className="px-6 text-[10px] font-black uppercase tracking-[0.4em] text-slate-600">Categories</p>
-              <nav className="flex lg:flex-col gap-1.5 overflow-x-auto pb-4 lg:pb-0 scrollbar-hide">
+              <nav className="flex lg:flex-col gap-1.5 overflow-x-auto pb-4 lg:pb-0">
                 ${['all', ...Object.values(GameCategory)].map(c => html`
-                  <button key=${c} onClick=${() => setCategory(c)} className=${`px-8 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${category === c ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'}`}>
+                  <button key=${c} onClick=${() => setCategory(c)} className=${`px-8 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${category === c ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'}`}>
                     ${c === 'all' ? 'All Units' : c}
                   </button>
                 `)}
               </nav>
-            </div>
-            <div className="glass-panel p-8 rounded-[2rem] border border-white/5 space-y-4 hidden lg:block opacity-60">
-              <h4 className="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-2"><${Cpu} className="w-4 h-4" /> Telemetry</h4>
-              <div className="space-y-2 font-mono text-[9px] text-slate-500">
-                <div className="flex justify-between"><span>Kernel</span><span className="text-green-400">V7_STABLE</span></div>
-                <div className="flex justify-between"><span>Status</span><span className="text-indigo-400">Online</span></div>
-              </div>
             </div>
           </aside>
           
@@ -222,9 +213,9 @@ const App = () => {
               <${Route} path="/" element=${html`
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 pb-32">
                   ${filtered.map(game => html`
-                    <${Link} key=${game.id} to="/game/${game.id}" className="glass-panel rounded-[2.5rem] overflow-hidden group border border-white/5 flex flex-col hover:border-indigo-500/40 transition-all hover:-translate-y-2">
-                      <div className="aspect-[16/10] relative overflow-hidden bg-slate-900">
-                        <img src="${game.thumbnail}" className="w-full h-full object-cover opacity-50 grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105" />
+                    <${Link} key=${game.id} to="/game/${game.id}" className="bg-slate-900 rounded-[2.5rem] overflow-hidden group border border-white/5 flex flex-col hover:border-indigo-500/40 transition-all hover:-translate-y-2">
+                      <div className="aspect-[16/10] relative overflow-hidden bg-slate-950">
+                        <img src="${game.thumbnail}" className="w-full h-full object-cover opacity-50 grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:opacity-100" />
                         <div className="absolute top-6 left-6 px-4 py-1.5 bg-black/80 rounded-full text-[9px] font-black text-indigo-400 uppercase tracking-widest border border-white/10 shadow-xl">${game.category}</div>
                       </div>
                       <div className="p-8 space-y-3 flex-1">
@@ -233,9 +224,6 @@ const App = () => {
                       </div>
                     <//>
                   `)}
-                  ${filtered.length === 0 && html`
-                    <div className="col-span-full py-40 text-center opacity-30 font-orbitron text-xs uppercase tracking-[0.5em]">MODULE_NOT_DETECTED</div>
-                  `}
                 </div>
               `} />
               <${Route} path="/game/:id" element=${html`<${GameView} games=${GAMES} />`} />
@@ -263,7 +251,7 @@ const GameView = ({ games }) => {
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-32">
       <div className="flex items-center justify-between">
         <${Link} to="/" className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-white transition-all bg-white/5 px-8 py-3 rounded-full border border-white/5">
-          <${ArrowLeft} className="w-4 h-4" /> Extraction
+          <${ArrowLeft} className="w-4 h-4" /> Return to Hub
         <//>
       </div>
       
@@ -285,7 +273,7 @@ const GameView = ({ games }) => {
           <h1 className="font-orbitron text-5xl font-black text-white uppercase tracking-tighter">${game.title}</h1>
           <p className="text-slate-400 text-xl leading-relaxed font-medium opacity-80">${game.description}</p>
         </div>
-        <div className="glass-panel p-10 rounded-[2.5rem] border border-white/5 space-y-6 h-fit">
+        <div className="bg-slate-900 p-10 rounded-[2.5rem] border border-white/5 space-y-6 h-fit">
            <div className="flex items-center gap-4 text-indigo-400 font-black text-[10px] uppercase tracking-widest"><${Shield} className="w-5 h-5" /> Protocol: ACTIVE</div>
            <button onClick=${() => window.location.replace("https://google.com")} className="w-full py-5 bg-red-600/10 text-red-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl border border-red-500/20 hover:bg-red-600 hover:text-white transition-all">PANIC (ESC)</button>
         </div>
