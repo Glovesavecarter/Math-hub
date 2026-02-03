@@ -5,12 +5,27 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-const boot = () => {
-  const container = document.getElementById('root');
-  if (!container) return;
+const start = () => {
+  console.log("Kernel: Initializing Hub...");
+  const rootElement = document.getElementById('root');
+  if (!rootElement) {
+    console.error("Critical Error: Root element not found.");
+    return;
+  }
+
+  // Define dismiss function for safety
+  const dismissLoader = () => {
+    const loader = document.getElementById('emergency-loader');
+    if (loader) {
+      loader.style.display = 'none';
+      if (loader.parentNode) loader.parentNode.removeChild(loader);
+    }
+    document.body.style.overflow = 'auto';
+    document.body.style.height = 'auto';
+  };
 
   try {
-    const root = ReactDOM.createRoot(container);
+    const root = ReactDOM.createRoot(rootElement);
     root.render(
       html`
         <${React.StrictMode}>
@@ -19,23 +34,19 @@ const boot = () => {
       `
     );
     
-    // Immediate dismissal handshake
-    if (typeof (window as any).forceDismiss === 'function') {
-      // Delay slightly to allow the first paint of the app
-      setTimeout((window as any).forceDismiss, 150);
-    }
-  } catch (err) {
-    console.error("Critical Kernel Panic:", err);
-    // If React fails to render, we still want the user to see whatever is there
-    if (typeof (window as any).forceDismiss === 'function') {
-      (window as any).forceDismiss();
-    }
+    // Handshake: Dismiss overlay after a short delay to allow first paint
+    setTimeout(dismissLoader, 200);
+    
+  } catch (error) {
+    console.error("Critical Mount Error:", error);
+    // If React fails to render, we still want the user to see the page state
+    dismissLoader();
   }
 };
 
-// Start as soon as possible
+// Start boot sequence when ready
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
-  boot();
+    start();
 } else {
-  window.addEventListener('DOMContentLoaded', boot);
+    window.addEventListener('DOMContentLoaded', start);
 }
