@@ -5,7 +5,7 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-// Initialize process.env polyfill before anything else
+// CRITICAL: Initialize process.env polyfill BEFORE any other execution
 if (typeof window['process'] === 'undefined') {
   window['process'] = { 
     env: { 
@@ -28,14 +28,16 @@ const mount = () => {
       `
     );
     
-    // Attempt to dismiss loader after mount
+    // Dismiss the loading overlay after the initial render is queued
     if (window['dismissLoader']) {
       setTimeout(() => window['dismissLoader'](), 300);
     }
   } catch (err) {
-    console.error("Mount Failure:", err);
+    console.error("Critical System Failure during Mount:", err);
+    // Even if it fails, try to show whatever rendered or at least hide the loader
     if (window['dismissLoader']) window['dismissLoader']();
   }
 };
 
+// Execute boot protocol
 mount();

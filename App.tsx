@@ -1,4 +1,3 @@
-
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
@@ -11,7 +10,7 @@ import { GoogleGenAI } from "@google/genai";
 
 const html = htm.bind(React.createElement);
 
-// --- Constants & Data (Consolidated) ---
+// --- Tactical Constants ---
 const GameCategory = {
   ACTION: 'Action',
   STRATEGY: 'Strategy',
@@ -23,7 +22,7 @@ const GAMES = [
   {
     id: 'slope',
     title: 'Slope',
-    description: 'High-speed 3D spatial reasoning challenge. Navigate gravity-defying courses with sub-millisecond precision.',
+    description: 'High-speed 3D spatial reasoning challenge. Navigate gravity-defying courses with extreme precision.',
     category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=600',
     url: 'https://azgames.io/game/xlope/'
@@ -78,12 +77,11 @@ const GAMES = [
   }
 ];
 
-// --- Sub-components ---
-
+// --- Tactical HUD (AI Helper) ---
 const ARES_HUD = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 Online. UPLINK_ESTABLISHED. How can I assist your operations?' }]);
+  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 Tactical Link established. System monitoring active.' }]);
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
 
@@ -100,20 +98,18 @@ const ARES_HUD = () => {
     setLoading(true);
 
     try {
-      // Use process.env.API_KEY directly as per Google GenAI guidelines
-      // @ts-ignore: process.env is polyfilled in index.tsx
       const apiKey = process.env.API_KEY;
       const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: userMsg,
         config: {
-          systemInstruction: 'You are ARES-1, tactical support AI. Professional tone. Provide concise gaming tips.'
+          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. Provide brief, professional, tech-focused gaming advice.'
         }
       });
       setMessages(prev => [...prev, { role: 'ai', text: response.text || 'SIGNAL_LOST' }]);
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'ai', text: 'LINK_FAILURE: TIMEOUT' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: 'CONNECTION_TIMEOUT' }]);
     } finally {
       setLoading(false);
     }
@@ -122,13 +118,13 @@ const ARES_HUD = () => {
   return html`
     <div className=${`fixed bottom-8 right-8 z-[100] transition-all duration-500 ${isOpen ? 'w-[320px] h-[450px]' : 'w-14 h-14'}`}>
       ${!isOpen ? html`
-        <button onClick=${() => setIsOpen(true)} className="w-full h-full bg-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl border border-indigo-400/50 hover:scale-110 active:scale-95 transition-all">
-          <${Bot} className="w-6 h-6 text-white" />
+        <button onClick=${() => setIsOpen(true)} className="w-full h-full bg-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl border border-indigo-400/50 hover:scale-110 active:scale-95 transition-all group">
+          <${Bot} className="w-6 h-6 text-white group-hover:rotate-12 transition-transform" />
         </button>
       ` : html`
         <div className="w-full h-full glass-panel rounded-3xl overflow-hidden flex flex-col border border-indigo-500/30 shadow-2xl">
           <div className="p-4 bg-indigo-600/20 border-b border-indigo-500/10 flex items-center justify-between">
-            <span className="font-orbitron text-[10px] font-black uppercase tracking-widest text-indigo-100">ARES-1 HUD</span>
+            <span className="font-orbitron text-[10px] font-black uppercase tracking-widest text-indigo-100">ARES-1 TACTICAL HUD</span>
             <button onClick=${() => setIsOpen(false)} className="p-1 hover:bg-white/10 rounded-lg text-slate-400"><${X} className="w-4 h-4" /></button>
           </div>
           <div ref=${scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-950/40 font-mono text-[10px] scrollbar-hide">
@@ -142,7 +138,7 @@ const ARES_HUD = () => {
             ${loading && html`<div className="text-indigo-500/30 italic animate-pulse px-2 text-[9px]">UPLINKING...</div>`}
           </div>
           <form onSubmit=${handleSend} className="p-3 bg-slate-900/80 border-t border-white/5 flex gap-2">
-            <input type="text" value=${input} onInput=${(e) => setInput(e.target.value)} placeholder="Enter query..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
+            <input type="text" value=${input} onInput=${(e) => setInput(e.target.value)} placeholder="Query..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
             <button type="submit" className="p-2 bg-indigo-600 rounded-xl text-white"><${Send} className="w-4 h-4" /></button>
           </form>
         </div>
@@ -154,10 +150,10 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_stable') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_final') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_stable', cloak.toString());
+    localStorage.setItem('mh_cloak_final', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
     const handlePanic = (e) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);
@@ -178,7 +174,7 @@ const App = () => {
         <nav className="sticky top-0 z-50 glass-panel border-b border-white/10 px-8 py-5">
           <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-12">
             <${Link} to="/" className="flex items-center gap-4 shrink-0 group">
-              <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg transition-transform group-hover:scale-110"><${Sigma} className="w-6 h-6 text-white" /></div>
+              <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-600/20 transition-transform group-hover:scale-110"><${Sigma} className="w-6 h-6 text-white" /></div>
               <span className="font-orbitron text-2xl font-black text-white uppercase hidden sm:block tracking-tighter">MATH HUB</span>
             <//>
             
@@ -197,7 +193,7 @@ const App = () => {
               <button 
                 onClick=${() => setCloak(!cloak)} 
                 title="Stealth Protocol"
-                className=${`p-3.5 rounded-xl border transition-all ${cloak ? 'bg-green-600/10 text-green-400 border-green-500/20' : 'bg-white/5 text-slate-500 border-white/5 hover:text-white'}`}
+                className=${`p-3.5 rounded-xl border transition-all ${cloak ? 'bg-green-600/10 text-green-400 border-green-500/20 shadow-[0_0_15px_rgba(34,197,94,0.1)]' : 'bg-white/5 text-slate-500 border-white/5 hover:text-white'}`}
               >
                 <${Ghost} className="w-6 h-6" />
               </button>
@@ -208,7 +204,7 @@ const App = () => {
         <main className="flex-1 max-w-[1600px] mx-auto w-full px-8 py-12 flex flex-col lg:flex-row gap-16">
           <aside className="w-full lg:w-72 space-y-10 shrink-0">
             <div className="space-y-4">
-              <p className="px-6 text-[10px] font-black uppercase tracking-[0.4em] text-slate-600">Categories</p>
+              <p className="px-6 text-[10px] font-black uppercase tracking-[0.4em] text-slate-600">Unit Type</p>
               <nav className="flex lg:flex-col gap-1.5 overflow-x-auto pb-4 lg:pb-0 scrollbar-hide">
                 ${['all', ...Object.values(GameCategory)].map(c => html`
                   <button key=${c} onClick=${() => setCategory(c)} className=${`px-8 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${category === c ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'}`}>
@@ -216,6 +212,14 @@ const App = () => {
                   </button>
                 `)}
               </nav>
+            </div>
+            
+            <div className="glass-panel p-8 rounded-[2rem] border border-white/5 space-y-4 hidden lg:block opacity-60">
+              <h4 className="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-2"><${Cpu} className="w-4 h-4" /> Telemetry</h4>
+              <div className="space-y-2 font-mono text-[9px] text-slate-500">
+                <div className="flex justify-between"><span>Core Frequency</span><span className="text-indigo-400">NOMINAL</span></div>
+                <div className="flex justify-between"><span>Node Latency</span><span className="text-green-400">14ms</span></div>
+              </div>
             </div>
           </aside>
           
@@ -227,7 +231,7 @@ const App = () => {
                     <${Link} key=${game.id} to="/game/${game.id}" className="glass-panel rounded-[2.5rem] overflow-hidden group border border-white/5 flex flex-col hover:border-indigo-500/40 transition-all hover:-translate-y-2">
                       <div className="aspect-[16/10] relative overflow-hidden bg-slate-900">
                         <img src="${game.thumbnail}" className="w-full h-full object-cover opacity-50 grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105" />
-                        <div className="absolute top-6 left-6 px-4 py-1.5 bg-black/80 rounded-full text-[9px] font-black text-indigo-400 uppercase tracking-widest border border-white/10">${game.category}</div>
+                        <div className="absolute top-6 left-6 px-4 py-1.5 bg-black/80 rounded-full text-[9px] font-black text-indigo-400 uppercase tracking-widest border border-white/10 shadow-xl">${game.category}</div>
                       </div>
                       <div className="p-8 space-y-3 flex-1">
                         <h3 className="font-orbitron text-lg font-bold text-white uppercase group-hover:text-indigo-400 transition-colors">${game.title}</h3>
@@ -236,11 +240,11 @@ const App = () => {
                     <//>
                   `)}
                   ${filtered.length === 0 && html`
-                    <div className="col-span-full py-40 text-center opacity-30 font-orbitron text-xs uppercase tracking-[0.5em]">NO_MODULES_DETECTED</div>
+                    <div className="col-span-full py-40 text-center opacity-30 font-orbitron text-xs uppercase tracking-[0.5em]">MODULE_NOT_DETECTED</div>
                   `}
                 </div>
               `} />
-              <Route path="/game/:id" element=${html`<${GameView} games=${GAMES} />`} />
+              <${Route} path="/game/:id" element=${html`<${GameView} games=${GAMES} />`} />
             <//>
           </div>
         </main>
@@ -259,7 +263,7 @@ const GameView = ({ games }) => {
 
   useEffect(() => { window.scrollTo(0, 0); }, [gameId]);
 
-  if (!game) return html`<div className="py-40 text-center font-orbitron opacity-40 uppercase tracking-[1em]">ERROR: MODULE_VOID</div>`;
+  if (!game) return html`<div className="py-40 text-center font-orbitron opacity-40 uppercase tracking-[1em]">SYSTEM_ERROR: VOID</div>`;
 
   return html`
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-32">
@@ -267,7 +271,7 @@ const GameView = ({ games }) => {
         <${Link} to="/" className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-white transition-all bg-white/5 px-8 py-3 rounded-full border border-white/5">
           <${ArrowLeft} className="w-4 h-4" /> Extraction
         <//>
-        <div className="text-[10px] font-bold text-slate-700 font-mono uppercase tracking-widest">SESSION: ${game.id.toUpperCase()}</div>
+        <div className="text-[10px] font-bold text-slate-700 font-mono uppercase tracking-widest">SESSION_ID: ${game.id.toUpperCase()}</div>
       </div>
       
       <div className="relative aspect-video w-full bg-black rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl group ring-1 ring-indigo-500/10">
@@ -278,7 +282,7 @@ const GameView = ({ games }) => {
           sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin allow-storage-access-by-user-activation"
           ref=${iframeRef} 
         />
-        <button onClick=${() => iframeRef.current?.requestFullscreen()} className="absolute bottom-10 right-10 p-3.5 bg-black/60 backdrop-blur-3xl border border-white/10 text-white rounded-xl opacity-0 group-hover:opacity-100 hover:bg-indigo-600 transition-all">
+        <button onClick=${() => iframeRef.current?.requestFullscreen()} className="absolute bottom-10 right-10 p-3.5 bg-black/60 backdrop-blur-3xl border border-white/10 text-white rounded-xl opacity-0 group-hover:opacity-100 hover:bg-indigo-600 transition-all shadow-2xl">
           <${Maximize} className="w-5 h-5" />
         </button>
       </div>
@@ -286,10 +290,10 @@ const GameView = ({ games }) => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <div className="lg:col-span-2 space-y-6">
           <h1 className="font-orbitron text-5xl font-black text-white uppercase tracking-tighter">${game.title}</h1>
-          <p className="text-slate-400 text-xl leading-relaxed font-medium">${game.description}</p>
+          <p className="text-slate-400 text-xl leading-relaxed font-medium opacity-80">${game.description}</p>
         </div>
         <div className="glass-panel p-10 rounded-[2.5rem] border border-white/5 space-y-6 h-fit">
-           <div className="flex items-center gap-4 text-indigo-400 font-black text-[10px] uppercase tracking-widest"><${Shield} className="w-5 h-5" /> Protocol: ACTIVE</div>
+           <div className="flex items-center gap-4 text-indigo-400 font-black text-[10px] uppercase tracking-widest"><${Shield} className="w-5 h-5" /> Shield: ACTIVE</div>
            <button onClick=${() => window.location.replace("https://google.com")} className="w-full py-5 bg-red-600/10 text-red-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl border border-red-500/20 hover:bg-red-600 hover:text-white transition-all">PANIC (ESC)</button>
         </div>
       </div>
