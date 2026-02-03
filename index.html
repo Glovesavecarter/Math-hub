@@ -21,7 +21,7 @@
             gap: 2rem !important;
             pointer-events: all !important;
             opacity: 1;
-            transition: opacity 0.4s ease, visibility 0.4s;
+            transition: opacity 0.4s ease;
         }
         
         .loader-ring {
@@ -36,42 +36,35 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .bypass-btn {
-            all: unset;
-            padding: 16px 32px !important;
+            appearance: none;
+            -webkit-appearance: none;
             background: #6366f1 !important;
-            border: 1px solid rgba(255,255,255,0.1) !important;
+            border: 1px solid rgba(255,255,255,0.2) !important;
             border-radius: 12px !important;
             color: white !important;
-            font-size: 10px !important;
+            font-size: 11px !important;
+            padding: 18px 32px !important;
             cursor: pointer !important;
             font-family: 'Orbitron', sans-serif !important;
             text-transform: uppercase !important;
-            letter-spacing: 3px !important;
+            letter-spacing: 4px !important;
             font-weight: 900 !important;
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3) !important;
-            transition: all 0.2s ease !important;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4) !important;
+            display: inline-block !important;
             text-align: center !important;
-            display: block !important;
-            user-select: none !important;
         }
-        
-        .bypass-btn:hover { background: #4f46e5 !important; transform: translateY(-2px) !important; box-shadow: 0 15px 40px rgba(99, 102, 241, 0.4) !important; }
-        .bypass-btn:active { transform: translateY(0) scale(0.96) !important; }
     </style>
     <script>
-        // EMERGENCY BOOTSTRAP - Runs before any module scripts
+        // GLOBAL EMERGENCY BOOTSTRAP
         window.process = { env: { API_KEY: "" } };
         
-        // This function is defined globally to be independent of the module system
-        window.__RECOVERY_BYPASS__ = function() {
-            console.log("RECOVERY_PROTOCOL_INITIATED");
-            var loader = document.getElementById('emergency-loader');
-            if (loader) {
-                loader.style.opacity = '0';
-                loader.style.visibility = 'hidden';
-                setTimeout(function() {
-                    if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
-                }, 500);
+        // Primitive bypass function
+        window.forceDismiss = function() {
+            console.log("FORCE_BYPASS_TRIGGERED");
+            var l = document.getElementById('emergency-loader');
+            if (l) {
+                l.style.display = 'none';
+                if (l.parentNode) l.parentNode.removeChild(l);
             }
             document.body.style.overflow = 'auto';
             document.body.style.height = 'auto';
@@ -79,13 +72,13 @@
             return false;
         };
 
-        // Watchdog: Automatic reveal after 3 seconds to guarantee site access
+        // Automatic watchdog: Reveal site after 2.5 seconds regardless
         setTimeout(function() {
             if (document.getElementById('emergency-loader')) {
-                console.warn("Watchdog: Module hang detected. Forcing UI reveal.");
-                window.__RECOVERY_BYPASS__();
+                console.warn("Watchdog: Sync Timeout. Revealing UI.");
+                window.forceDismiss();
             }
-        }, 3000);
+        }, 2500);
     </script>
     <script type="importmap">
 {
@@ -105,9 +98,9 @@
 <body>
     <div id="emergency-loader">
         <div class="loader-ring"></div>
-        <div class="font-orbitron" style="font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900; text-align: center;">BOOT_V21_MASTER</div>
-        <button class="bypass-btn" onclick="window.__RECOVERY_BYPASS__();">Force Launch Engine</button>
-        <p style="font-size: 9px; color: #475569; font-family: 'JetBrains Mono'; opacity: 0.5; text-align: center; max-width: 250px; line-height: 1.6; margin-top: -10px;">ULTRA-PRIMITIVE RECOVERY ACTIVE</p>
+        <div class="font-orbitron" style="font-size: 11px; color: #6366f1; letter-spacing: 6px; font-weight: 900; text-align: center;">BOOT_V22_STABLE</div>
+        <button class="bypass-btn" onclick="window.forceDismiss();">Force Launch Hub</button>
+        <p style="font-size: 10px; color: #475569; font-family: 'JetBrains Mono'; opacity: 0.5; text-align: center; max-width: 250px; line-height: 1.6;">GITHUB PAGES PATCH: CONFLICTS REMOVED</p>
     </div>
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>

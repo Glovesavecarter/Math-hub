@@ -5,8 +5,7 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-const startEngine = () => {
-  console.log("Kernel: Initializing Tactical Command Hub...");
+const start = () => {
   const container = document.getElementById('root');
   if (!container) return;
 
@@ -20,30 +19,20 @@ const startEngine = () => {
       `
     );
     
-    // Handshake: Dismiss loader once React takes control
-    const dismiss = () => {
-      if (typeof (window as any).__RECOVERY_BYPASS__ === 'function') {
-        (window as any).__RECOVERY_BYPASS__();
-      }
-    };
-
-    // Use requestAnimationFrame to ensure we reveal after the first paint
-    requestAnimationFrame(() => {
-        setTimeout(dismiss, 200);
-    });
-    
+    // Attempt to dismiss loader once render is scheduled
+    if (typeof (window as any).forceDismiss === 'function') {
+      setTimeout((window as any).forceDismiss, 100);
+    }
   } catch (err) {
-    console.error("Critical Kernel Panic during mount:", err);
-    // Force reveal so user can see at least the partial DOM or error state
-    if (typeof (window as any).__RECOVERY_BYPASS__ === 'function') {
-        (window as any).__RECOVERY_BYPASS__();
+    console.error("Mount Error:", err);
+    if (typeof (window as any).forceDismiss === 'function') {
+      (window as any).forceDismiss();
     }
   }
 };
 
-// Start initialization sequence
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startEngine);
+if (document.readyState === 'complete') {
+  start();
 } else {
-    startEngine();
+  window.addEventListener('load', start);
 }
