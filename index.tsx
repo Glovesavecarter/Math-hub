@@ -5,7 +5,9 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-// Ensure process.env is available for the Gemini SDK
+console.log("System Initializing: Command V5");
+
+// Ensure process.env is polyfilled at the root level
 if (typeof window['process'] === 'undefined') {
   window['process'] = { 
     env: { 
@@ -28,14 +30,26 @@ const mount = () => {
       `
     );
     
-    // Signal to hide the loading overlay
+    // Hide loader if React succeeds
     if (window['dismissLoader']) {
-      setTimeout(() => window['dismissLoader'](), 300);
+      setTimeout(() => window['dismissLoader'](), 500);
     }
   } catch (err) {
-    console.error("Critical: Render Failure", err);
+    console.error("Critical Render Failure:", err);
+    rootElement.innerHTML = `
+      <div style="padding: 100px; text-align: center; color: white; font-family: 'Orbitron', sans-serif;">
+        <h1 style="color: #6366f1;">BOOT_ERROR</h1>
+        <p style="opacity: 0.5; font-size: 12px; margin-top: 20px;">CRITICAL SYSTEM FAULT: CHECK CONSOLE</p>
+        <button onclick="location.reload()" style="margin-top: 20px; padding: 12px 24px; background: #6366f1; border: none; border-radius: 8px; color: white; cursor: pointer; font-family: 'Orbitron'; text-transform: uppercase;">REBOOT_SYSTEM</button>
+      </div>
+    `;
     if (window['dismissLoader']) window['dismissLoader']();
   }
 };
 
-mount();
+// Fire when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', mount);
+} else {
+  mount();
+}
