@@ -78,7 +78,7 @@ const GAMES = [
 const ARES_HUD = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 System Online. How can I assist with your deployment?' }]);
+  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 System Online. Tactical analysis ready.' }]);
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -100,7 +100,7 @@ const ARES_HUD = () => {
         model: 'gemini-3-flash-preview',
         contents: userMsg,
         config: {
-          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. You help users navigate games and provide pro-tips. Tone: Cybernetic, direct, helpful.'
+          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. You are a gaming expert. Keep it cyber-themed and helpful.'
         }
       });
       setMessages(prev => [...prev, { role: 'ai', text: response.text || 'ERROR: Uplink interrupted.' }]);
@@ -145,10 +145,10 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v14') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v15') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_v14', cloak.toString());
+    localStorage.setItem('mh_cloak_v15', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
     const handlePanic = (e: KeyboardEvent) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);
@@ -199,18 +199,11 @@ const App = () => {
               <p className="px-6 text-[10px] font-black uppercase tracking-[0.4em] text-slate-600">Categories</p>
               <nav className="flex lg:flex-col gap-1.5 overflow-x-auto pb-4 lg:pb-0 scrollbar-hide">
                 ${['all', ...Object.values(GameCategory)].map(c => html`
-                  <button key=${c} onClick=${() => setCategory(c)} className=${`px-8 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${category === c ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'}`}>
+                  <button key=${c} onClick=${() => setCategory(c)} className=${`px-4 py-3 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all ${category === c ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'}`}>
                     ${c === 'all' ? 'All Units' : c}
                   </button>
                 `)}
               </nav>
-            </div>
-            <div className="p-8 rounded-[2.5rem] border border-white/5 space-y-4 hidden lg:block opacity-60">
-              <h4 className="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-2"><${Cpu} className="w-4 h-4" /> Telemetry</h4>
-              <div className="space-y-2 font-mono text-[9px] text-slate-500">
-                <div className="flex justify-between"><span>Kernel</span><span className="text-green-400">V14_STABLE</span></div>
-                <div className="flex justify-between"><span>Status</span><span className="text-indigo-400">Online</span></div>
-              </div>
             </div>
           </aside>
           

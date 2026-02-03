@@ -5,8 +5,8 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-const startApp = () => {
-  console.log("Engine: Mounting Core...");
+const boot = () => {
+  console.log("Kernel: Initializing Tactical UI...");
   const container = document.getElementById('root');
   if (!container) return;
 
@@ -20,20 +20,19 @@ const startApp = () => {
       `
     );
     
-    // Auto-dismiss the loader after a short buffer
+    // Handshake: Dismiss the loader once React has painted
     setTimeout(() => {
       if (typeof (window as any).dismissLoader === 'function') {
         (window as any).dismissLoader();
       }
     }, 500);
-  } catch (error) {
-    console.error("Engine: Mount Failure", error);
-    // Manual button in index.html remains as fallback
+  } catch (err) {
+    console.error("Kernel Panic during mount:", err);
   }
 };
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', startApp);
+  document.addEventListener('DOMContentLoaded', boot);
 } else {
-  startApp();
+  boot();
 }
