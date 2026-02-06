@@ -3,7 +3,8 @@ import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-ro
 import { 
   Search, Sigma, Zap, ArrowLeft, Maximize, 
   Bot, Send, Ghost, X, Shield, Play, Terminal,
-  LayoutGrid, Flame, Trophy, Target, Clock, Settings
+  LayoutGrid, Flame, Trophy, Target, Clock, Settings,
+  ChevronRight
 } from 'lucide-react';
 import htm from 'htm';
 import { GoogleGenAI } from "@google/genai";
@@ -28,12 +29,15 @@ const ARES_HUD = ({ activeGame }: { activeGame?: any }) => {
 
   const queryGemini = async (prompt: string) => {
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || "" });
+      const apiKey = process.env.API_KEY;
+      if (!apiKey) return "ENCRYPTION_ERROR: Uplink Key Missing.";
+      
+      const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: prompt,
         config: {
-          systemInstruction: 'You are ARES-1, a tactical gaming assistant. Provide concise, pro-level strategy tips. Use a cyberpunk, professional military tone. Keep responses under 60 words.'
+          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. Tone: Cyberpunk, military, concise. Responses < 60 words.'
         }
       });
       return response.text;
@@ -61,7 +65,7 @@ const ARES_HUD = ({ activeGame }: { activeGame?: any }) => {
     if (!activeGame || loading) return;
     setIsOpen(true);
     setLoading(true);
-    const result = await queryGemini(`Provide a tactical briefing for the game: ${activeGame.title}. Include one tip and one secret.`);
+    const result = await queryGemini(`Tactical briefing for: ${activeGame.title}. Strategy and secrets required.`);
     setMessages(prev => [...prev, { role: 'ai', text: result || 'Briefing failed.' }]);
     setLoading(false);
   };
@@ -96,8 +100,7 @@ const ARES_HUD = ({ activeGame }: { activeGame?: any }) => {
             `)}
             ${loading && html`
               <div className="flex items-center gap-2 text-indigo-500 animate-pulse text-[9px] font-black tracking-widest uppercase">
-                <div className="w-1.5 h-1.5 bg-indigo-500 rounded-full animate-bounce"></div>
-                Analyzing Vectors...
+                Analyzing...
               </div>
             `}
           </div>
@@ -119,7 +122,7 @@ const ARES_HUD = ({ activeGame }: { activeGame?: any }) => {
                 placeholder="Query Tactical Core..." 
                 className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-indigo-500 transition-all" 
               />
-              <button type="submit" className="p-2.5 bg-indigo-600 rounded-xl text-white hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-600/20">
+              <button type="submit" className="p-2.5 bg-indigo-600 rounded-xl text-white">
                 <${Send} className="w-4 h-4" />
               </button>
             </form>
@@ -189,9 +192,6 @@ const HomePage = ({ games, search, category, setCategory }: any) => {
                   <${Play} className="w-3 h-3 fill-indigo-500" />
                   INITIATE
                 </div>
-                <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-indigo-600 group-hover:border-indigo-600 transition-all duration-300">
-                  <${ArrowLeft} className="w-4 h-4 text-white rotate-180" />
-                </div>
               </div>
             </div>
           <//>
@@ -218,14 +218,9 @@ const GameDetail = ({ games }: { games: any[] }) => {
           <${ArrowLeft} className="w-4 h-4" />
           Directory Extraction
         <//>
-        <div className="flex items-center gap-4">
-          <span className="text-[10px] font-black text-indigo-500 uppercase tracking-widest bg-indigo-500/10 px-4 py-2 rounded-lg border border-indigo-500/20">
-            STABILITY: OPTIMAL
-          </span>
-        </div>
       </div>
 
-      <div className="relative aspect-video w-full bg-black rounded-[3rem] overflow-hidden border border-white/10 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.8)] group">
+      <div className="relative aspect-video w-full bg-black rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl group">
         <iframe 
           ref=${iframeRef}
           src="${game.url}" 
@@ -249,49 +244,18 @@ const GameDetail = ({ games }: { games: any[] }) => {
             <h1 className="font-orbitron text-5xl font-black text-white uppercase tracking-tighter mb-4">${game.title}</h1>
             <p className="text-slate-400 text-xl leading-relaxed font-medium opacity-80">${game.description}</p>
           </div>
-          
-          <div className="p-8 rounded-[2.5rem] bg-indigo-600/5 border border-indigo-500/10 flex items-start gap-6">
-            <div className="p-4 bg-indigo-600 rounded-2xl shadow-xl shadow-indigo-600/20 shrink-0">
-              <${Shield} className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h4 className="font-orbitron text-xs font-black text-white uppercase tracking-widest mb-2">Sandbox Security</h4>
-              <p className="text-[11px] text-slate-500 leading-relaxed uppercase tracking-wider">
-                This module is operating within a Level 4 tactical container. Session data is encrypted and self-destructs upon extraction. Use the PANIC (ESC) protocol for immediate evacuation.
-              </p>
-            </div>
-          </div>
         </div>
-        
         <div className="space-y-6">
           <div className="bg-slate-900/40 p-10 rounded-[2.5rem] border border-white/5 space-y-8">
-             <div className="space-y-4">
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600">Module Specs</p>
-                <div className="space-y-3">
-                   <div className="flex justify-between text-[11px] font-bold">
-                      <span className="text-slate-500 uppercase tracking-widest">Type</span>
-                      <span className="text-indigo-400 uppercase tracking-widest">${game.category}</span>
-                   </div>
-                   <div className="flex justify-between text-[11px] font-bold">
-                      <span className="text-slate-500 uppercase tracking-widest">Latency</span>
-                      <span className="text-green-500 uppercase tracking-widest">2ms</span>
-                   </div>
-                   <div className="flex justify-between text-[11px] font-bold">
-                      <span className="text-slate-500 uppercase tracking-widest">Encryption</span>
-                      <span className="text-slate-300 uppercase tracking-widest">AES-256</span>
-                   </div>
-                </div>
-             </div>
              <button 
                onClick=${() => window.location.replace("https://google.com")} 
-               className="w-full py-5 bg-red-600/10 text-red-500 font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl border border-red-500/20 hover:bg-red-600 hover:text-white transition-all shadow-lg hover:shadow-red-600/20"
+               className="w-full py-5 bg-red-600/10 text-red-500 font-black text-[10px] uppercase tracking-[0.3em] rounded-2xl border border-red-500/20 hover:bg-red-600 hover:text-white transition-all shadow-lg"
              >
                PANIC_ABORT (ESC)
              </button>
           </div>
         </div>
       </div>
-      
       <${ARES_HUD} activeGame=${game} />
     </div>
   `;
@@ -344,7 +308,7 @@ const App = () => {
               placeholder="Search Module Directory..." 
               value=${search} 
               onInput=${(e: any) => setSearch(e.target.value)} 
-              className="w-full bg-slate-900/50 border border-white/10 rounded-2xl py-3.5 pl-14 pr-6 text-[11px] text-white font-mono tracking-wider focus:outline-none focus:border-indigo-500/50 focus:bg-slate-900 transition-all placeholder:text-slate-600 uppercase" 
+              className="w-full bg-slate-900/50 border border-white/10 rounded-2xl py-3.5 pl-14 pr-6 text-[11px] text-white font-mono tracking-wider focus:outline-none focus:border-indigo-500 transition-all placeholder:text-slate-600 uppercase" 
             />
           </div>
           
@@ -356,16 +320,6 @@ const App = () => {
             >
               <${Ghost} className="w-5 h-5" />
             </button>
-            <div className="h-8 w-[1px] bg-white/5 hidden lg:block"></div>
-            <div className="hidden lg:flex items-center gap-3">
-              <div className="flex flex-col items-end">
-                <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Latency</span>
-                <span className="text-[10px] font-black text-green-500 uppercase">2ms</span>
-              </div>
-              <div className="w-10 h-10 rounded-full bg-slate-900 border border-white/10 flex items-center justify-center">
-                <${Shield} className="w-4 h-4 text-indigo-500" />
-              </div>
-            </div>
           </div>
         </div>
       </nav>
@@ -380,24 +334,15 @@ const App = () => {
                   <button 
                     key=${cat.id} 
                     onClick=${() => setCategory(cat.id)} 
-                    className=${`group flex items-center justify-between px-6 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all ${category === cat.id ? 'bg-indigo-600 text-white shadow-xl shadow-indigo-600/20' : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'}`}
+                    className=${`group flex items-center justify-between px-6 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all ${category === cat.id ? 'bg-indigo-600 text-white' : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'}`}
                   >
                     <div className="flex items-center gap-4">
-                      <${cat.icon} className=${`w-4 h-4 ${category === cat.id ? 'text-white' : 'text-slate-600 group-hover:text-indigo-400'}`} />
+                      <${cat.icon} className="w-4 h-4" />
                       ${cat.name}
                     </div>
                   </button>
                 `)}
               </nav>
-            </div>
-            
-            <div className="p-8 rounded-[2rem] bg-indigo-600/5 border border-indigo-500/10 space-y-4">
-              <div className="flex items-center gap-2 text-indigo-400 font-black text-[9px] uppercase tracking-widest">
-                <${Terminal} className="w-4 h-4" /> System Message
-              </div>
-              <p className="text-[10px] text-slate-500 leading-relaxed font-medium">
-                Daily synchronization complete. 7 new modules decrypted. Global network uptime: 100%.
-              </p>
             </div>
           </aside>
         `}
@@ -413,5 +358,4 @@ const App = () => {
   `;
 };
 
-const RootApp = () => html`<${Router}><${App} /><//>`;
-export default RootApp;
+export default App;

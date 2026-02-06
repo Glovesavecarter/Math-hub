@@ -6,10 +6,10 @@
     <title>Math Hub | Tactical Command</title>
     <script>
         // EMERGENCY BOOTSTRAP
-        window.process = { env: { API_KEY: "" } };
+        // Note: process.env.API_KEY is handled by the platform injection
         
         window.forceDismiss = function() {
-            console.log("RECOVERY_PROTOCOL: Clearing boot screen.");
+            console.log("RECOVERY_PROTOCOL: Executing forced UI reveal.");
             var loader = document.getElementById('emergency-loader');
             if (loader) {
                 loader.style.opacity = '0';
@@ -26,7 +26,7 @@
         // Fail-safe: If the app hasn't revealed in 3 seconds, force it.
         setTimeout(function() {
             if (document.getElementById('emergency-loader')) {
-                console.warn("Watchdog: App took too long to mount. Forcing reveal.");
+                console.warn("Watchdog: App load taking longer than expected. Bypassing loader.");
                 window.forceDismiss();
             }
         }, 3000);
